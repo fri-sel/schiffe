@@ -175,6 +175,20 @@ class Spielfeld:
                     print("X ", end="")
             print("")
 
+    def victory_check(self):
+        """Checken ob alle Schiffe versenkt wurden"""
+        for x in range(0, 10):
+            for y in range(0, 10):
+                if self.data[x][y] == State.SCHIFF:
+                    return 1
+        print("Glückwunsch - Du hast alle Schiffe versenkt!")
+        return 0
+
+    def game_speedrun(self):
+        """Schnelldurchlauf des Spiels zum Testen"""
+        while feld1.victory_check() != 0:
+            feld1.auto_shooter()
+        feld1.print_field()
 
 """Spielfeld erstellen"""
 feld1 = Spielfeld(10, 10)
@@ -202,7 +216,7 @@ feld1.print_field()
 
 """Schießen"""
 # feld1.single_shot()
-feld1.auto_shooter()
+# feld1.auto_shooter()
 
-"""Ausgabe Feld"""
-feld1.print_field()
+"""Spielablauf und Ende"""
+# feld1.game_speedrun()
