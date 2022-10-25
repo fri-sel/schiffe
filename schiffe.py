@@ -1,5 +1,8 @@
 """Schiffe"""
+
 from enum import Enum
+
+from schiessen import letters_to_numbers
 
 
 class Direction(Enum):
@@ -26,6 +29,7 @@ class Direction(Enum):
         if eingabe == "u":
             return Direction.UNTEN
 
+
 class Schiff:
     """Klasse zur Repräsentierung der Schiffe"""
 
@@ -34,11 +38,24 @@ class Schiff:
         self.richtung = richtung
 
     @staticmethod
-    def einlesen():
-        """Einlesen Schiffsdaten"""
+    def einlesen() -> int:
+        """Einlesen Schiffslänge"""
         print(
             "Was für ein Schiff soll hinzugefügt werden?\n 1: 1er Schiff\n 2: 2er Schiff\n 3: 3er Schiff\n 4: 4er Schiff"
         )
-        self.laenge = int(input("Zahl eingeben: "))
+        eingabe = int(input("Schifflänge eingeben: "))
 
-        self.richtung = Direction.einlesen()
+        return eingabe
+
+    def posx() -> int:
+        """Einlesen X-Position Schiff"""
+        print("Wo soll das Schiff platziert werden?")
+        eingabe = str(input("X-Pos (Buchstabe) eingeben: "))
+
+        return letters_to_numbers[eingabe]
+
+    def posy() -> int:
+        """Einlesen Y-Position Schiff"""
+        eingabe = int(input("Y-Pos (Zahl) eingeben: "))
+
+        return eingabe
