@@ -2,34 +2,12 @@
 
 from enum import Enum
 
+from colors import bcolors
+from direction import Direction
 from schiessen import letters_to_numbers
 
 
-class Direction(Enum):
-    """Enum Kodierung Schiffrichtungen"""
-
-    RECHTS = "r"
-    LINKS = "l"
-    OBEN = "o"
-    UNTEN = "u"
-
-    @staticmethod
-    def einlesen() -> "Direction":
-        """Einlesen Schiffsdaten"""
-        print(
-            "In welche Richtung soll das Schiff platziert werden?\n r: rechts\n l: links\n o: oben\n u: unten"
-        )
-        eingabe = str(input("Richtung eingeben: "))
-        if eingabe == "l":
-            return Direction.LINKS
-        if eingabe == "r":
-            return Direction.RECHTS
-        if eingabe == "o":
-            return Direction.OBEN
-        if eingabe == "u":
-            return Direction.UNTEN
-
-
+# from typing import List, Tuple
 class Schiff:
     """Klasse zur Repräsentierung der Schiffe"""
 
@@ -41,21 +19,33 @@ class Schiff:
     def einlesen() -> int:
         """Einlesen Schiffslänge"""
         print(
-            "Was für ein Schiff soll hinzugefügt werden?\n 1: 1er Schiff\n 2: 2er Schiff\n 3: 3er Schiff\n 4: 4er Schiff"
+            f"{bcolors.UNDERLINE}Was für ein Schiff soll hinzugefügt werden?{bcolors.RESET}\n 1: 1er Schiff\n 2: 2er Schiff\n 3: 3er Schiff\n 4: 4er Schiff"
         )
         eingabe = int(input("Schifflänge eingeben: "))
+        if eingabe < 1 or eingabe > 4:
+            raise KeyError(
+                f"{bcolors.RED}Fehler: Ungültige Länge angegeben{bcolors.RESET}"
+            )
 
         return eingabe
 
-    def posx() -> int:
-        """Einlesen X-Position Schiff"""
-        print("Wo soll das Schiff platziert werden?")
-        eingabe = str(input("X-Pos (Buchstabe) eingeben: "))
-
-        return letters_to_numbers[eingabe]
-
-    def posy() -> int:
+    def posy(self) -> int:
         """Einlesen Y-Position Schiff"""
-        eingabe = int(input("Y-Pos (Zahl) eingeben: "))
+        print(
+            f"{bcolors.UNDERLINE}Wo soll das Schiff platziert werden?{bcolors.RESET}\n"
+        )
+        eingabe = str(input("Y-Pos (Buchstabe) eingeben: "))
+        if eingabe != str:
+            raise KeyError(
+                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+            )
+        return letters_to_numbers[eingabe] - 1
 
-        return eingabe
+    def posx(self) -> int:
+        """Einlesen X-Position Schiff"""
+        eingabe = int(input("X-Pos (Zahl) eingeben: "))
+        if eingabe != int:
+            raise KeyError(
+                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+            )
+        return eingabe - 1
