@@ -9,7 +9,7 @@ Der Computer versucht nun diese Schiffe abzuschießen.
 
 Montag 24.10.2022:
 <br>Planung des Projekts</br>
-Rahmenbedingungen (Sprache, ...) festlegen
+<br>Rahmenbedingungen (Sprache, ...) festlegen</br>
 Aufgaben verteilen
 Klasse Spielfeld und Klasse Schiff anlegen
 
