@@ -1,9 +1,13 @@
-# Schiffe Versenken
+# Gruppenprojekt "Schiffe Versenken"
 ***
-Beschreibung:
-Ein Programm mit welchem es möglich ist Schiffe Versenken zu spielen.
-Der Nutzer (Spieler) wählt die Position seiner Schiffe mit verschiendener Länge.
-Der Computer versucht nun diese Schiffe abzuschießen.
+Beschreibung:<br />
+Ein Programm mit welchem es möglich ist Schiffe Versenken zu spielen.<br />
+Es wird eine 10x10 großes Spielfeld erzeugt mit Buchstaben (A-J) auf der x-Achse und Zahlen (1-10) auf der y-Achse.<br />
+Der Nutzer (Spieler) wählt die Position und Ausrichtung seiner Schiffe mit verschiendener Länge.<br />
+Die Schiffe können nun abgeschossen werden.<br />
+Dafür gibt es zwei Modi - Single-Shot und Auto-Shooter:<br />
+Im Modus Single-Shot kann der Nutzer (Spieler) durch Eingabe eine Position wählen auf die geschossen werden soll.<br />+
+Im Modus Auto-Shooter versucht der Computer mit Schüssen auf zufällige Positionen alle Schiffe zu versenken.<br /> 
 ***
 <h2>Zeitplan</h2>
 
