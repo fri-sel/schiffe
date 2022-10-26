@@ -2,7 +2,7 @@
 ***
 <h2>Beschreibung:</h2>
 Ein Programm mit welchem es möglich ist Schiffe Versenken zu spielen.<br />
-Es wird eine 10x10 großes Spielfeld erzeugt mit Buchstaben (A-J) auf der x-Achse und Zahlen (1-10) auf der y-Achse.<br />
+Es wird eine 10x10 großes Spielfeld erzeugt mit Zahlen (1-10)  auf der x-Achse Buchstaben (A-J) und auf der y-Achse.<br />
 Der Nutzer (Spieler) wählt die Position und Ausrichtung seiner Schiffe mit verschiendener Länge.<br />
 Die Schiffe können nun abgeschossen werden.<br />
 Dafür gibt es zwei Modi - Single-Shot und Auto-Shooter:<br />
