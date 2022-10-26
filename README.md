@@ -9,7 +9,7 @@ Dafür gibt es zwei Modi - Single-Shot und Auto-Shooter:<br />
 Im Modus Single-Shot kann der Nutzer (Spieler) durch Eingabe eine Position wählen auf die geschossen werden soll.<br />
 <p>Im Modus Auto-Shooter versucht der Computer mit Schüssen auf zufällige Positionen alle Schiffe zu versenken.<p/> 
 <h2>Legende:</h2>
-〰️ = Wasser<br />
+<span style="color:blue">〰️ = Wasser</span><br />
 🚢 = Schiff<br />
 &nbsp; &nbsp;= Beschossen<br />
 <p>❌ = Getroffen</p>
