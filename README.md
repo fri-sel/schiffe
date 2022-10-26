@@ -9,10 +9,10 @@ Dafür gibt es zwei Modi - Single-Shot und Auto-Shooter:<br />
 Im Modus Single-Shot kann der Nutzer (Spieler) durch Eingabe eine Position wählen auf die geschossen werden soll.<br />
 <p>Im Modus Auto-Shooter versucht der Computer mit Schüssen auf zufällige Positionen alle Schiffe zu versenken.<p/> 
 <h2>Legende:</h2>
-_ = Wasser<br />
-S = Schiff<br />
+🟦 = Wasser<br />
+🚢 = Schiff<br />
 &nbsp; &nbsp;= Beschossen<br />
-<p>X = Getroffen</p>
+<p>❌ = Getroffen</p>
 
 <h2> Dokumentation:</h2>
 <br /> <a href="https://github.com/fri-sel/schiffe/wiki/Dokumentation-des-Projekts:-%22Schiffe-Versenken%22">"Schiffe Versenken" Wiki</a> <br />
