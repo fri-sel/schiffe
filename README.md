@@ -7,8 +7,7 @@ Der Nutzer (Spieler) wählt die Position und Ausrichtung seiner Schiffe mit vers
 Die Schiffe können nun abgeschossen werden.<br />
 Dafür gibt es zwei Modi - Single-Shot und Auto-Shooter:<br />
 Im Modus Single-Shot kann der Nutzer (Spieler) durch Eingabe eine Position wählen auf die geschossen werden soll.<br />
-Im Modus Auto-Shooter versucht der Computer mit Schüssen auf zufällige Positionen alle Schiffe zu versenken.<br /> 
-***
+<p>Im Modus Auto-Shooter versucht der Computer mit Schüssen auf zufällige Positionen alle Schiffe zu versenken.<p/> 
 <h2>Legende:</h2>
 _ = Wasser<br />
 S = Schiff<br />
