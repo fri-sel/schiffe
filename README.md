@@ -11,7 +11,7 @@ Im Modus Single-Shot kann der Nutzer (Spieler) durch Eingabe eine Position wähl
 <h2>Legende:</h2>
 _ = Wasser<br />
 S = Schiff<br />
-&nbsp; = Beschossen<br />
+&nbsp; &nbsp;= Beschossen<br />
 X = Getroffen<br />
 
 <br /> <a href="https://github.com/fri-sel/schiffe/wiki">"Schiffe Versenken" Wiki</a> <br />
