@@ -14,4 +14,4 @@ S = Schiff<br />
 &nbsp; = Beschossen<br />
 X = Getroffen<br />
 
-<a href="https://github.com/fri-sel/schiffe/wiki">"Schiffe Versenken" Wiki</a>
+<p> <a href="https://github.com/fri-sel/schiffe/wiki">"Schiffe Versenken" Wiki</a> <p>
