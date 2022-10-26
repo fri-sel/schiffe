@@ -1,3 +1,5 @@
+"""erster Versuch"""
+
 from random import randint
 
 board = []
@@ -9,7 +11,8 @@ def ausgabe(board):
     for row in board:
         print((" ").join(row))
 
-print("Let's play Battleship!")
+print("0 1 2 3 4 5 6 7 8 9")
+print()
 ausgabe(board)
 
 def random_x(board):
