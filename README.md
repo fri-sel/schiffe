@@ -16,3 +16,6 @@ S = Schiff<br />
 
 <h2> Dokumentation:</h2>
 <br /> <a href="https://github.com/fri-sel/schiffe/wiki/Dokumentation-des-Projekts:-%22Schiffe-Versenken%22">"Schiffe Versenken" Wiki</a> <br />
+
+<h2>Anleitung:</h2>
+<br /> <a href="https://github.com/fri-sel/schiffe/wiki/Anleitung">"Schiffe Versenken" Anleitung </a> <br />
