@@ -1,4 +1,6 @@
 """Spielfeld"""
+import sys
+import time
 from enum import Enum
 from random import randint
 from typing import List, Tuple
@@ -19,9 +21,13 @@ class State(Enum):
 
 
 class Statistics:
-    rounds = 0
-    ships_hitted = 0
-    missed_shots = 0
+    rounds: int = 0
+    ships_hitted: int = 0
+    missed_shots: int = 0
+
+
+class Settings:
+    ship_anz: int = 1
 
 
 class Spielfeld:
@@ -100,19 +106,15 @@ class Spielfeld:
 
     def auto_add_ships(self):
         """Computer added Schiffe an zufälligen Positionen"""
-        anz = 5
+        anz = Settings.ship_anz
         success = 0
 
         while success != anz:
-            for success in range(anz):
-                try:
-                    feld1.auto_create_ship()
-                    success += 1
-                except Exception as e:
-                    raise RuntimeError(
-                        f"\n{bcolors.RED}Fehler: Schiff konnte nicht erstellt werden{bcolors.RESET}\n"
-                    ) from e
-            print(success)
+            try:
+                feld1.auto_create_ship()
+                success += 1
+            except:
+                pass
 
     def lese_position(self):
         """Einlesen einer Position"""
@@ -174,6 +176,11 @@ class Spielfeld:
         """Einlesen X-Position Schuss"""
         eingabe = int(input("X-Pos (Zahl) eingeben: "))
 
+        if eingabe < 1 or eingabe > self.breite:
+            raise KeyError(
+                f"{bcolors.RED}Fehler: Ungültige Länge angegeben{bcolors.RESET}"
+            )
+
         return eingabe
 
     def shoot_y(self) -> int:
@@ -199,7 +206,7 @@ class Spielfeld:
             self.data[x][y] = State.GETROFFEN
             Statistics.missed_shots += 1
             print(
-                f"\n{bcolors.RED}Du hast dieses Schiff bereits getroffen!{bcolors.RESET}\n"
+                f"\n{bcolors.RED}-> Du hast dieses Schiff bereits getroffen!{bcolors.RESET}\n"
             )
         elif self.data[x][y] == State.BESCHOSSEN:
             Statistics.missed_shots += 1
@@ -210,27 +217,80 @@ class Spielfeld:
             self.data[x][y] = State.BESCHOSSEN
             Statistics.missed_shots += 1
             print(
-                f"\n{bcolors.YELLOW}-> Nur Wasser getroffen...{bcolors.RESET}\n"
+                f"\n{bcolors.YELLOW}-> Du hast ins Wasser getroffen...{bcolors.RESET}\n"
             )
 
     def auto_shooter(self):
         """Automatisch random Schüsse auf Map"""
-        anz = 1000
-        for anz in range(anz):
-            x = randint(1, 10) - 1
-            y = randint(1, 10) - 1
 
-            if self.data[x][y] == State.SCHIFF:
-                self.data[x][y] = State.GETROFFEN
-                Statistics.ships_hitted += 1
-            elif self.data[x][y] == State.GETROFFEN:
-                self.data[x][y] = State.GETROFFEN
-                Statistics.missed_shots += 1
-            else:
-                self.data[x][y] = State.BESCHOSSEN
-                Statistics.missed_shots += 1
-            Statistics.rounds += 1
+        x = randint(1, 10) - 1
+        y = randint(1, 10) - 1
+
+        if self.data[x][y] == State.SCHIFF:
+            self.data[x][y] = State.GETROFFEN
+            Statistics.ships_hitted += 1
+        elif self.data[x][y] == State.GETROFFEN:
+            self.data[x][y] = State.GETROFFEN
+            Statistics.missed_shots += 1
+        else:
+            self.data[x][y] = State.BESCHOSSEN
+            Statistics.missed_shots += 1
+        Statistics.rounds += 1
         feld1.print_field()
+
+    def print_menu(self):
+        eingabe = 0
+        print(
+            f"{bcolors.TUERKIS_UNDERLINE_BOLD}WILLKOMMEN BEI SCHIFFE VERSENKEN{bcolors.RESET}\n"
+        )
+        print(
+            f"{bcolors.BOLD}[1] Singleplayer\n[2] Spielvorführung\n[3] Anleitung\n[4] Einstellungen\n{bcolors.RESET}\n"
+        )
+
+        eingabe = int(
+            input(f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}")
+        )
+        if eingabe == 1:
+            feld1.game_normal_run()
+            print(
+                f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
+            )
+            ende_auswahl = int(
+                input(f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}")
+            )
+            if ende_auswahl == 1:
+                feld1.clear_Field()
+                feld1.print_menu()
+            else:
+                sys.exit()
+
+        elif eingabe == 2:
+            feld1.game_speedrun()
+            print(
+                f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
+            )
+            ende_auswahl = int(
+                input(f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}")
+            )
+            if ende_auswahl == 1:
+                feld1.clear_Field()
+                feld1.print_menu()
+            else:
+                sys.exit()
+
+        elif eingabe == 3:
+            print("folgt")
+
+        elif eingabe == 4:
+            Settings.ship_anz = input(
+                f"{bcolors.BOLD}Anzahl der Schiffe eingeben: {bcolors.RESET}"
+            )
+            print("Fehler fixen")
+
+        else:
+            raise KeyError(
+                f"{bcolors.RED}Fehler: Ungültige Auswahl{bcolors.RESET}"
+            )
 
     def print_field(self):
         """Ausgeben des Feldes und setzen der Schiffe"""
@@ -253,9 +313,21 @@ class Spielfeld:
             print("")
         print("\n")
 
+    def clear_Field(self):
+        """Leeren des Feldes (Alles zu Wasser)"""
+        for y in range(self.hoehe):
+            for x in range(self.breite):
+                self.data[x][y] = State.WASSER
+        feld1.reset_statistics()
+
+    def reset_statistics(self):
+        Statistics.rounds = 0
+        Statistics.missed_shots = 0
+        Statistics.ships_hitted = 0
+
     def print_statistics(self):
 
-        print("Verbrauchte Schüsse:", Statistics.rounds)
+        print("Schüsse Gesamt:", Statistics.rounds)
         print("Treffer bei Schiffen:", Statistics.ships_hitted)
         print("Verfehlte Schüsse:", Statistics.missed_shots)
 
@@ -273,14 +345,22 @@ class Spielfeld:
 
     def game_speedrun(self):
         """Schnelldurchlauf des Spiels zum Testen"""
+        print(
+            f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Spielvorführung{bcolors.RESET}\n"
+        )
+        feld1.auto_add_ships()
+        feld1.print_field()
+        time.sleep(3)
         while feld1.victory_check() != 0:
             feld1.auto_shooter()
+            time.sleep(0.5)
 
     def game_normal_run(self):
         """Normaler Ablauf des Spiels bis Sieg"""
         print(
             f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Singleplayer{bcolors.RESET}\n"
         )
+        feld1.auto_add_ships()
         feld1.print_field()
         while feld1.victory_check() != 0:
             feld1.single_shot()
@@ -304,11 +384,10 @@ schiff5 = Schiff(4, Direction.OBEN)
 # feld1.add_ship(schiff3, 10, 10)
 # feld1.add_ship(schiff4, 8, 2)
 # feld1.add_ship(schiff5, 5, 9)
-feld1.auto_add_ships()
 
 # Schiffe per Nutzereingabe erstellen und platzieren
 # feld1.create_ship()
-
+# feld1.auto_add_ships()
 
 # Ausgabe Feld
 # feld1.print_field()
@@ -319,4 +398,7 @@ feld1.auto_add_ships()
 
 # Spielablauf und Ende
 # feld1.game_speedrun()
-feld1.game_normal_run()
+# feld1.game_normal_run()
+
+# Menü printen
+feld1.print_menu()
