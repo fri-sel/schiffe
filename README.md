@@ -8,7 +8,7 @@ Der Computer versucht nun diese Schiffe abzuschießen.
 <h2>Zeitplan</h2>
 
 Montag 24.10.2022:
-Planung des Projekts
+<br>Planung des Projekts</br>
 Rahmenbedingungen (Sprache, ...) festlegen
 Aufgaben verteilen
 Klasse Spielfeld und Klasse Schiff anlegen
