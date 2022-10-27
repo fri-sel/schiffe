@@ -15,7 +15,10 @@ Im Modus Single-Shot kann der Nutzer (Spieler) durch Eingabe eine Position wähl
 <p>❌ = Getroffen</p>
 
 <h2> Dokumentation:</h2>
-<br /> <a href="https://github.com/fri-sel/schiffe/wiki/Dokumentation-des-Projekts:-%22Schiffe-Versenken%22">"Schiffe Versenken" Wiki</a> <br />
+<br /> <a href="https://github.com/fri-sel/schiffe/wiki/Dokumentation-des-Projekts:-%22Schiffe-Versenken%22">Hier kommt ihr zu unserer Dokumentation.</a> <br />
 
 <h2>Anleitung:</h2>
-<br /> <a href="https://github.com/fri-sel/schiffe/wiki/Anleitung">"Schiffe Versenken" Anleitung </a> <br />
+<br /> <a href="https://github.com/fri-sel/schiffe/wiki/Anleitung"> Falls nötig findet ihr hier eine Anleitung zu unserem Schiffe Versenken. </a> <br />
+
+<h2>Designentscheidungen:</h2>
+<br /> <a href="https://github.com/fri-sel/schiffe/wiki/Designentscheidungen"> Wen es interessiert kann hier die Designentscheidungen zu unserem Schiffe Versenken finden.</a> <br />
