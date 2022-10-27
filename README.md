@@ -2,7 +2,7 @@
 ***
 <h2>Beschreibung:</h2>
 Ein Programm mit welchem es möglich ist Schiffe Versenken zu spielen.<br />
-<p>Wenn das Programm gestarter wird, ist ein Menü mit verschienden Auswahlmöglichkeiten wie "Singleplayer", "Multiplayer" oder "Einstellungen" zu sehen. Per Eingabe der Zahl des entsprechenden Menüpunktes, kann dieser aufgerufen werden.</p>
+<p>Wenn das Programm gestartet wird, ist ein Menü mit verschienden Auswahlmöglichkeiten wie "Singleplayer", "Multiplayer" oder "Einstellungen" zu sehen. Per Eingabe der Zahl des entsprechenden Menüpunktes, kann dieser aufgerufen werden.</p>
 
 Singleplayer:<br />
 Es wird ein 10x10 großes Spielfeld erzeugt mit Zahlen (1-10)  auf der x-Achse Buchstaben (A-J) und auf der y-Achse.<br />
