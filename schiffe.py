@@ -1,108 +1,63 @@
+"""Schiffe"""
+
 from enum import Enum
 
-
-class State(Enum):
-    """Enum Kodierung Spielfeldzeilen"""
-
-    WASSER = 0
-    SCHIFF = 1
-    BESCHOSSEN = 2
-    VERSENKT = 3
+from colors import bcolors
+from direction import Direction
+from schiessen import letters_to_numbers
 
 
-class Spielfeld:
-    """Klasse zur Repräsentierung des Spielfelds"""
+# from typing import List, Tuple
+class Schiff:
+    """Klasse zur Repräsentierung der Schiffe"""
 
-    def __init__(self, hoehe, breite):
-        self.hoehe = hoehe
-        self.breite = breite
-        self.data = [[0 for x in range(hoehe)] for y in range(breite)]
+    def __init__(self, laenge: int, richtung: Direction):
+        self.laenge = laenge
+        self.richtung = richtung
 
-    def change_field(self, posx, posy):
-        """Feld an einer Position ändern"""
-        self.data[posx][posy] = 1
+    @staticmethod
+    def einlesen() -> int:
+        """Einlesen Schiffslänge"""
+        print(
+            f"{bcolors.UNDERLINE}Was für ein Schiff soll hinzugefügt werden?{bcolors.RESET}\n 1: 1er Schiff\n 2: 2er Schiff\n 3: 3er Schiff\n 4: 4er Schiff"
+        )
+        eingabe = int(input("Schifflänge eingeben: "))
+        if eingabe < 1 or eingabe > 4:
+            raise KeyError(
+                f"{bcolors.RED}Fehler: Ungültige Länge angegeben{bcolors.RESET}"
+            )
 
-    def add_ship(self,posx,posy):
-        """Schiffe an einer Position adden"""
+        return eingabe
 
-    def print_field(self):
-        """Ausgeben des Feldes und setzen der Schiffe"""
-        self.data[1][1] = 1
-        self.data[2][2] = 1
-        self.data[3][3] = 1
-        print("- 1 2 3 4 5 6 7 8 9 10")
+    def posy(self) -> int:
+        """Einlesen Y-Position Schiff"""
 
-        assert self.breite == 10
-        for x, label in enumerate("ABCDEFGHIJ"):
-            print(label + " ", end="")
+        while True:
+            print(
+            f"{bcolors.UNDERLINE}Wo soll das Schiff platziert werden?{bcolors.RESET}\n"
+            )
+            eingabe = str(input("Y-Pos (Buchstabe) eingeben: ")).upper()
+            if eingabe in "ABCDEFGHIJ":
+                break
+            else:
+                print(
+                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                )
+                continue
 
-            for y in range(self.hoehe):
-                if self.data[x][y] == 0:
-                    print("_ ", end="")
-                elif self.data[x][y] == 1:
-                    print("X ", end="")
-            print("")
+        return letters_to_numbers[eingabe] - 1
 
-letters_to_numbers = {
-    'A': 1,
-    'B': 2,
-    'C': 3,
-    'D': 4,
-    'E': 5,
-    'F': 6,
-    'G': 7,
-    'H': 8,
-    'I': 9,
-    'J': 10,
-}
+    def posx(self) -> int:
+        """Einlesen X-Position Schiff"""
 
+        while True:
+            eingabe = int(input("X-Pos (Zahl) eingeben: "))
+            if eingabe > 0 and eingabe <= 10:
+                break
+            else:
+                print(
+                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                )
+                continue
 
-class Ship(object):
-
-      def __init__(self,lenght):
-        self.lenght = lenght
-
-
-class Player(object):
-
-  def choose_ship_position() -> None:
-
-    print("Platzieren Sie ein Schiff!")
-
-    column = input("Wählen Sie eine Spalte (A bis J):").upper()
-    while column not in "ABCDEFGHIJ":
-        print("Sie haben eine ungültige Spalte gewählt.")
-        column = input("Wählen Sie eine Spalte (A bis J):").upper()
-
-    row = input("Wählen Sie eine Reihe(1 bis 10):").upper()
-    while row not in "12345678910":
-        print("Sie haben eine ungültige Reihe gewählt.")
-        row = input("Wählen Sie eine Reihe(1 bis 10):").upper()
-
-    return int(row) - 1, letters_to_numbers[column] - 1
-
-def print_board(board):
-    # Show the board, one row at a time
-    print("  A B C D E")
-    print(" +-+-+-+-+-+")
-    row_number = 1
-    for row in board:
-        print("%d|%s|" % (row_number, "|".join(row)))
-        print(" +-+-+-+-+-+")
-        row_number = row_number + 1
-
-
-feld1 = Spielfeld(10, 10)
-feld1.change_field(0, 0)
-feld1.print_field()
-
-
-for n in range(5):
-    print("Platiere Schiff", n + 1,"!")
-    row_number, column_number = Player.choose_ship_position()
-
-    if board[row_number][column_number] == 'X':
-     print("Hier befindet sich bereits ein Schiff!")
-
-    board[row_number][column_number] = 'X'
-    print_board(board)
+        return eingabe - 1
