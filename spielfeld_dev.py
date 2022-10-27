@@ -361,7 +361,6 @@ class Spielfeld:
 
     def print_menu(self):
         while True:
-            eingabe = 0
             print(
                 f"{bcolors.TUERKIS_UNDERLINE}WILLKOMMEN BEI SCHIFFE VERSENKEN{bcolors.RESET}\n"
             )
@@ -388,7 +387,7 @@ class Spielfeld:
                         self.clear_Field()
                         self.print_menu()
                     else:
-                        sys.exit()
+                        break
 
                 elif eingabe == 2:
                     feld1.game_multiplayer_vs_bot()
@@ -408,7 +407,7 @@ class Spielfeld:
                         feld2.clear_Field()
                         feld1.print_menu()
                     else:
-                        sys.exit()
+                        break
 
 
                 elif eingabe == 3:
@@ -427,28 +426,29 @@ class Spielfeld:
                         self.clear_Field()
                         self.print_menu()
                     else:
-                        sys.exit()
+                        break
                 elif eingabe == 4:
                     self.game_speedrun()
-                    print(
-                        f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
-                    )
-                    ende_auswahl = int(
-                        input(f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}")
-                    )
                     while True:
+                        print(
+                        f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
+                        )
+                        ende_auswahl = int(
+                        input(f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}")
+                         )
                         try:
                             ende_auswahl = int(ende_auswahl)
                             if ende_auswahl == 1:
                                 self.clear_Field()
                                 self.print_menu()
                             elif ende_auswahl == 2:
-                                sys.exit()
+                                break
                         except ValueError:
                             print(
                             f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
                             )
                             continue
+                    break
                 elif eingabe == 5:
                     print("folgt")
 
@@ -470,7 +470,8 @@ class Spielfeld:
                     self.print_menu()
 
                 elif eingabe == 8:
-                    sys.exit()
+                    break
+
 
                 else:
                     raise KeyError(
@@ -480,6 +481,8 @@ class Spielfeld:
                 print(
                 f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
                  )
+
+        sys.exit()
 
 
     def print_field(self):
@@ -541,10 +544,8 @@ class Spielfeld:
         )
         self.auto_add_ships()
         self.print_field()
-        time.sleep(3)
         while self.victory_check() != 0:
             self.auto_shooter()
-            time.sleep(Settings.animation_time)
 
     def game_normal_run(self):
         """Normaler Ablauf des Spiels bis Sieg"""
