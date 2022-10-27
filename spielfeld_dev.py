@@ -7,7 +7,8 @@ from typing import List, Tuple
 
 from colors import bcolors
 from direction import Direction
-from schiffe import Schiff, letters_to_numbers
+from schiessen import letters_to_numbers, numbers_to_letters
+from schiffe import Schiff
 
 
 # from schiessen import Schuss
@@ -24,10 +25,14 @@ class Statistics:
     rounds: int = 0
     ships_hitted: int = 0
     missed_shots: int = 0
+    last_x: int = 0
+    last_y: int = 0
 
 
 class Settings:
-    ship_anz: int = 1
+    ship_anz: int = 5
+    animation_time: float = 0.5
+    difficulty = 1
 
 
 class Spielfeld:
@@ -104,6 +109,20 @@ class Spielfeld:
         for x, y in positions:
             self.data[x][y] = State.SCHIFF
 
+    def remove_ship(self, ship: Schiff, posx: int, posy: int):
+        """Schiffe an einer Position löschen"""
+
+        positions = self.berechne_positionen(ship, posx, posy)
+
+        for position in positions:
+            if self.check_if_free(*position):
+                raise IndexError(
+                    f"\n{bcolors.RED}Fehler: An der Stelle ist bereits ein Schiff{bcolors.RESET}\n"
+                )
+
+        for x, y in positions:
+            self.data[x][y] = State.WASSER
+
     def auto_add_ships(self):
         """Computer added Schiffe an zufälligen Positionen"""
         anz = Settings.ship_anz
@@ -111,7 +130,19 @@ class Spielfeld:
 
         while success != anz:
             try:
-                feld1.auto_create_ship()
+                self.auto_create_ship()
+                success += 1
+            except:
+                pass
+
+    def auto_add_ships_on_both_maps(self):
+        """Computer added Schiffe an zufälligen Positionen auf beiden Feldern"""
+        anz = 3
+        success = 0
+
+        while success != anz:
+            try:
+                self.auto_create_ships_on_both_maps()
                 success += 1
             except:
                 pass
@@ -124,7 +155,7 @@ class Spielfeld:
         )
         eingabe = str(input("Y-Pos (Buchstabe) eingeben: "))
 
-        y = letters_to_numbers[eingabe]
+        y = letters_to_numbers[eingabe.upper()]
 
         eingabe = int(input("X-Pos (Zahl) eingeben: "))
 
@@ -143,8 +174,75 @@ class Spielfeld:
         schiff = Schiff(Schiff.einlesen(), Direction.einlesen())
         try:
             x, y = self.lese_position()
-            feld1.add_ship(schiff, x, y)
+            self.add_ship(schiff, x, y)
         except Exception as e:
+            raise RuntimeError(
+                f"\n{bcolors.RED}Fehler: Schiff konnte nicht erstellt werden{bcolors.RESET}\n"
+            ) from e
+
+    def create_ships_on_both_maps(self):
+        """Schiffsdaten kopieren und random auf Feld 2 platzieren"""
+        randNr = randint(1, 4)
+        if randNr == 1:
+            randDirection = Direction.RECHTS
+        elif randNr == 2:
+            randDirection = Direction.LINKS
+        elif randNr == 3:
+            randDirection = Direction.OBEN
+        elif randNr == 4:
+            randDirection = Direction.UNTEN
+
+        randx = randint(1, 10)
+        randy = randint(1, 10)
+
+        schiff1 = Schiff(Schiff.einlesen(), Direction.einlesen())
+        schiff2 = Schiff(schiff1.laenge, randDirection)
+
+        try:
+            x, y = self.lese_position()
+            feld1.add_ship(schiff1, x, y)
+            feld2.add_ship(schiff2, randx, randy)
+        except:
+            feld1.remove_ship(schiff1, x, y)
+            pass
+
+    def auto_create_ships_on_both_maps(self):
+        """Schiffsdaten kopieren und random auf Feld 2 platzieren"""
+        randLength = randint(1, 4)
+        randNr = randint(1, 4)
+        if randNr == 1:
+            randDirection1 = Direction.RECHTS
+        elif randNr == 2:
+            randDirection1 = Direction.LINKS
+        elif randNr == 3:
+            randDirection1 = Direction.OBEN
+        elif randNr == 4:
+            randDirection1 = Direction.UNTEN
+
+        randNr2 = randint(1, 4)
+        if randNr2 == 1:
+            randDirection2 = Direction.RECHTS
+        elif randNr2 == 2:
+            randDirection2 = Direction.LINKS
+        elif randNr2 == 3:
+            randDirection2 = Direction.OBEN
+        elif randNr2 == 4:
+            randDirection2 = Direction.UNTEN
+
+        schiff1 = Schiff(randLength, randDirection1)
+        schiff2 = Schiff(schiff1.laenge, randDirection2)
+
+        randx1 = randint(1, 10)
+        randy1 = randint(1, 10)
+        randx2 = randint(1, 10)
+        randy2 = randint(1, 10)
+
+        try:
+            feld1.add_ship(schiff1, randx1, randy1)
+            feld2.add_ship(schiff2, randx2, randy2)
+
+        except Exception as e:
+            feld1.remove_ship(schiff1, randx1, randy1)
             raise RuntimeError(
                 f"\n{bcolors.RED}Fehler: Schiff konnte nicht erstellt werden{bcolors.RESET}\n"
             ) from e
@@ -166,7 +264,7 @@ class Spielfeld:
         try:
             x = randint(1, 10)
             y = randint(1, 10)
-            feld1.add_ship(schiff, x, y)
+            self.add_ship(schiff, x, y)
         except Exception as e:
             raise RuntimeError(
                 f"\n{bcolors.RED}Fehler: Schiff konnte nicht erstellt werden{bcolors.RESET}\n"
@@ -174,22 +272,28 @@ class Spielfeld:
 
     def shoot_x(self) -> int:
         """Einlesen X-Position Schuss"""
-        eingabe = int(input("X-Pos (Zahl) eingeben: "))
+        while True:
+            eingabe = int(input("X-Pos (Zahl) eingeben: "))
+            if eingabe > 0 and eingabe <= 10:
+                break
 
-        if eingabe < 1 or eingabe > self.breite:
-            raise KeyError(
-                f"{bcolors.RED}Fehler: Ungültige Länge angegeben{bcolors.RESET}"
-            )
+            print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
+            continue
 
         return eingabe
 
     def shoot_y(self) -> int:
         """Einlesen Y-Position Schuss"""
-        print(
-            f"{bcolors.UNDERLINE}Wohin soll geschossen werden?{bcolors.RESET}"
-        )
-        eingabe = str(input("Y-Pos (Buchstabe) eingeben: "))
+        while True:
+            print(
+                f"{bcolors.UNDERLINE}Wohin soll geschossen werden?{bcolors.RESET}"
+            )
+            eingabe = str(input("Y-Pos (Buchstabe) eingeben: ")).upper()
+            if eingabe in "ABCDEFGHIJ":
+                break
 
+            print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
+            continue
         return letters_to_numbers[eingabe]
 
     def single_shot(self):
@@ -197,6 +301,9 @@ class Spielfeld:
 
         y = self.shoot_y() - 1
         x = self.shoot_x() - 1
+
+        Statistics.last_x = x + 1
+        Statistics.last_y = numbers_to_letters[y + 1]
 
         if self.data[x][y] == State.SCHIFF:
             self.data[x][y] = State.GETROFFEN
@@ -236,7 +343,10 @@ class Spielfeld:
             self.data[x][y] = State.BESCHOSSEN
             Statistics.missed_shots += 1
         Statistics.rounds += 1
-        feld1.print_field()
+        self.print_field()
+        print(
+            f"{bcolors.UNDERLINE}Letzter Schuss:{bcolors.RESET} {numbers_to_letters[y + 1]}{x + 1}\n"
+        )
 
     def print_menu(self):
         eingabe = 0
@@ -244,48 +354,103 @@ class Spielfeld:
             f"{bcolors.TUERKIS_UNDERLINE_BOLD}WILLKOMMEN BEI SCHIFFE VERSENKEN{bcolors.RESET}\n"
         )
         print(
-            f"{bcolors.BOLD}[1] Singleplayer\n[2] Spielvorführung\n[3] Anleitung\n[4] Einstellungen\n{bcolors.RESET}\n"
+            f"{bcolors.BOLD}[1] Singleplayer\n[2] Multiplayer vs. Bot\n[3] Sandkasten-Modus\n[4] Spielvorführung\n[5] Anleitung\n[6] Einstellungen\n[8] Beenden\n{bcolors.RESET}\n"
         )
 
         eingabe = int(
             input(f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}")
         )
         if eingabe == 1:
-            feld1.game_normal_run()
+            self.game_normal_run()
             print(
                 f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
             )
             ende_auswahl = int(
-                input(f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}")
+                int(
+                    input(
+                        f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+                    )
+                )
             )
             if ende_auswahl == 1:
-                feld1.clear_Field()
-                feld1.print_menu()
+                self.clear_Field()
+                self.print_menu()
             else:
                 sys.exit()
 
         elif eingabe == 2:
-            feld1.game_speedrun()
+            feld1.game_multiplayer_vs_bot()
+
             print(
                 f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
             )
             ende_auswahl = int(
-                input(f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}")
+                int(
+                    input(
+                        f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+                    )
+                )
             )
             if ende_auswahl == 1:
                 feld1.clear_Field()
+                feld2.clear_Field()
                 feld1.print_menu()
             else:
                 sys.exit()
 
         elif eingabe == 3:
+            self.game_sandbox_mode()
+            print(
+                f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
+            )
+            ende_auswahl = int(
+                int(
+                    input(
+                        f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+                    )
+                )
+            )
+            if ende_auswahl == 1:
+                self.clear_Field()
+                self.print_menu()
+            else:
+                sys.exit()
+        elif eingabe == 4:
+            self.game_speedrun()
+            print(
+                f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
+            )
+            ende_auswahl = int(
+                input(f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}")
+            )
+            if ende_auswahl == 1:
+                self.clear_Field()
+                self.print_menu()
+            else:
+                sys.exit()
+
+        elif eingabe == 5:
             print("folgt")
 
-        elif eingabe == 4:
-            Settings.ship_anz = input(
-                f"{bcolors.BOLD}Anzahl der Schiffe eingeben: {bcolors.RESET}"
+        elif eingabe == 6:
+            anz = int(
+                input(
+                    f"{bcolors.BOLD}Anzahl der Schiffe eingeben: {bcolors.RESET}"
+                )
             )
-            print("Fehler fixen")
+            Settings.ship_anz = anz
+
+            ani_time = float(
+                input(
+                    f"{bcolors.BOLD}Animationsgeschwindigkeit: {bcolors.RESET}"
+                )
+            )
+            Settings.animation_time = ani_time
+
+            self.print_menu()
+
+        elif eingabe == 8:
+            sys.exit()
 
         else:
             raise KeyError(
@@ -311,19 +476,20 @@ class Spielfeld:
                 elif self.data[x][y] == State.GETROFFEN:
                     print(f"{bcolors.BLUE_BG}❌{bcolors.RESET}", end="")
             print("")
-        print("\n")
 
     def clear_Field(self):
         """Leeren des Feldes (Alles zu Wasser)"""
         for y in range(self.hoehe):
             for x in range(self.breite):
                 self.data[x][y] = State.WASSER
-        feld1.reset_statistics()
+        self.reset_statistics()
 
     def reset_statistics(self):
         Statistics.rounds = 0
         Statistics.missed_shots = 0
         Statistics.ships_hitted = 0
+        Statistics.last_x = 0
+        Statistics.last_y = 0
 
     def print_statistics(self):
 
@@ -340,7 +506,7 @@ class Spielfeld:
         print(
             f"{bcolors.TUERKIS_UNDERLINE}Glückwunsch - Du hast alle Schiffe versenkt!{bcolors.RESET}"
         )
-        feld1.print_statistics()
+        self.print_statistics()
         return 0
 
     def game_speedrun(self):
@@ -348,42 +514,99 @@ class Spielfeld:
         print(
             f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Spielvorführung{bcolors.RESET}\n"
         )
-        feld1.auto_add_ships()
-        feld1.print_field()
+        self.auto_add_ships()
+        self.print_field()
         time.sleep(3)
-        while feld1.victory_check() != 0:
-            feld1.auto_shooter()
-            time.sleep(0.5)
+        while self.victory_check() != 0:
+            self.auto_shooter()
+            time.sleep(Settings.animation_time)
 
     def game_normal_run(self):
         """Normaler Ablauf des Spiels bis Sieg"""
         print(
             f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Singleplayer{bcolors.RESET}\n"
         )
-        feld1.auto_add_ships()
-        feld1.print_field()
-        while feld1.victory_check() != 0:
-            feld1.single_shot()
+        self.auto_add_ships()
+        self.print_field()
+        while self.victory_check() != 0:
+            self.single_shot()
             Statistics.rounds += 1
-            feld1.print_field()
+            self.print_field()
+            print(
+                f"{bcolors.UNDERLINE}Letzter Schuss:{bcolors.RESET} {Statistics.last_y}{Statistics.last_x}\n"
+            )
+
+    def game_sandbox_mode(self):
+        """Sandkastenmodus: Selbst Schiffe platzieren"""
+        ship_anz = int(
+            input(
+                f"{bcolors.BOLD}Wie viele Schiffe sollen platziert werden?: {bcolors.RESET}"
+            )
+        )
+        for ship_anz in range(ship_anz):
+            self.create_ship()
+        print(
+            f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Sandkastenmodus{bcolors.RESET}\n"
+        )
+        self.print_field()
+        while self.victory_check() != 0:
+            self.single_shot()
+            Statistics.rounds += 1
+            self.print_field()
+            print(
+                f"{bcolors.UNDERLINE}Letzter Schuss:{bcolors.RESET} {Statistics.last_y}{Statistics.last_x}\n"
+            )
+
+    def game_multiplayer_vs_bot(self):
+        """Multiplayermodus gegen Computer"""
+        print(f"{bcolors.BOLD_UNDERLINE}Spielart wählen{bcolors.RESET}\n")
+        auswahl = int(
+            input(
+                f"{bcolors.UNDERLINE}Wie sollen die Schiffe platziert werden?{bcolors.RESET}\n[1] Selber hinzufügen\n[2] Automatisch hinzufügen\nEingabe: "
+            )
+        )
+        if auswahl == 1:
+            anz = int(
+                input(
+                    f"{bcolors.UNDERLINE}Wie viele Schiffe sollen platziert werden?: {bcolors.RESET}"
+                )
+            )
+            Settings.ship_anz = anz
+            for anz in range(anz):
+                self.create_ships_on_both_maps()
+
+        elif auswahl == 2:
+            self.auto_add_ships_on_both_maps()
+
+        else:
+            raise KeyError(
+                f"{bcolors.RED}Fehler: Ungültige Auswahl{bcolors.RESET}"
+            )
+
+        print(
+            f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Multiplayer vs. Bot{bcolors.RESET}\n"
+        )
+        feld1.print_field()
+        feld2.print_field()
 
 
 # Spielfeld erstellen
 feld1 = Spielfeld(10, 10)
+feld2 = Spielfeld(10, 10)
 # feld1.change_field(5, 5)
 
 # Schiffe per Code adden und platzieren
-schiff1 = Schiff(2, Direction.LINKS)
-schiff2 = Schiff(2, Direction.RECHTS)
-schiff3 = Schiff(3, Direction.OBEN)
-schiff4 = Schiff(3, Direction.UNTEN)
-schiff5 = Schiff(4, Direction.OBEN)
+# s1 = Schiff(2, Direction.LINKS)
+# s2 = Schiff(2, Direction.RECHTS)
+# s3 = Schiff(3, Direction.OBEN)
+# s4 = Schiff(3, Direction.UNTEN)
+# s5 = Schiff(4, Direction.OBEN)
 
-# feld1.add_ship(schiff1, 8, 8)
-# feld1.add_ship(schiff2, 2, 2)
-# feld1.add_ship(schiff3, 10, 10)
-# feld1.add_ship(schiff4, 8, 2)
-# feld1.add_ship(schiff5, 5, 9)
+# feld1.add_ship(s1, 8, 8)
+# feld1.add_ship(s2, 2, 2)
+# feld1.add_ship(s3, 10, 10)
+# feld1.add_ship(s4, 8, 2)
+# feld1.add_ship(s5, 5, 9)
 
 # Schiffe per Nutzereingabe erstellen und platzieren
 # feld1.create_ship()
