@@ -1,6 +1,7 @@
 """Spielfeld"""
 from enum import Enum
 from random import randint
+from re import A
 from typing import List, Tuple
 
 from colors import bcolors
@@ -171,14 +172,19 @@ class Spielfeld:
         """Einlesen X-Position Schuss"""
 
         while True:
-            eingabe = int(input("X-Pos (Zahl) eingeben: "))
-            if eingabe > 0 and eingabe <= 10:
-                break
-            else:
+            eingabe = input("X-Pos (Zahl) eingeben: ")
+            try:
+                eingabe = int(eingabe)
+                if eingabe > 0 and eingabe <= 10:
+                    break
                 print(
                 f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
-                )
+                 )
                 continue
+            except ValueError:
+                print(
+                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                 )
 
         return eingabe
 
