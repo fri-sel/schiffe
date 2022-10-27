@@ -410,6 +410,7 @@ class Spielfeld:
                     else:
                         sys.exit()
 
+
                 elif eingabe == 3:
                     self.game_sandbox_mode()
                     print(
@@ -435,12 +436,19 @@ class Spielfeld:
                     ende_auswahl = int(
                         input(f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}")
                     )
-                    if ende_auswahl == 1:
-                        self.clear_Field()
-                        self.print_menu()
-                    else:
-                        sys.exit()
-
+                    while True:
+                        try:
+                            ende_auswahl = int(ende_auswahl)
+                            if ende_auswahl == 1:
+                                self.clear_Field()
+                                self.print_menu()
+                            elif ende_auswahl == 2:
+                                sys.exit()
+                        except ValueError:
+                            print(
+                            f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                            )
+                            continue
                 elif eingabe == 5:
                     print("folgt")
 
