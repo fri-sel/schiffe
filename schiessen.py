@@ -15,6 +15,19 @@ letters_to_numbers = {
     "J": 10,
 }
 
+numbers_to_letters = {
+    1: "A",
+    2: "B",
+    3: "C",
+    4: "D",
+    5: "E",
+    6: "F",
+    7: "G",
+    8: "H",
+    9: "I",
+    10: "J",
+}
+
 
 class Schuss:
     """Klasse zur Implementierung der Schießfunktionen"""
@@ -28,7 +41,7 @@ class Schuss:
         print(f"{bcolors.UNDERLINE}Wohin soll geschossen werden{bcolors.RESET}")
         eingabe = str(input("X-Pos (Buchstabe) eingeben: "))
 
-        return letters_to_numbers[eingabe]
+        return letters_to_numbers[eingabe.upper()]
 
     def shoot_y(self) -> int:
         """Einlesen Y-Position Schuss"""
