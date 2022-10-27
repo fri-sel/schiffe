@@ -1,7 +1,10 @@
 """Spielfeld"""
+import os
+import re
 import sys
 import time
 from enum import Enum
+from multiprocessing.sharedctypes import Value
 from random import randint
 from typing import List, Tuple
 
@@ -10,6 +13,7 @@ from direction import Direction
 from schiessen import letters_to_numbers, numbers_to_letters
 from schiffe import Schiff
 
+clear = lambda: os.system("clear")
 
 # from schiessen import Schuss
 class State(Enum):
@@ -23,8 +27,14 @@ class State(Enum):
 
 class Statistics:
     rounds: int = 0
+    rounds_player1: int = 0
+    rounds_player2: int = 0
     ships_hitted: int = 0
+    ships_hitted_player1: int = 0
+    ships_hitted_player2: int = 0
     missed_shots: int = 0
+    missed_shots_player1: int = 0
+    missed_shots_player2: int = 0
     last_x: int = 0
     last_y: int = 0
 
@@ -137,7 +147,7 @@ class Spielfeld:
 
     def auto_add_ships_on_both_maps(self):
         """Computer added Schiffe an zufälligen Positionen auf beiden Feldern"""
-        anz = 3
+        anz = Settings.ship_anz
         success = 0
 
         while success != anz:
@@ -272,15 +282,17 @@ class Spielfeld:
 
     def shoot_x(self) -> int:
         """Einlesen X-Position Schuss"""
+
         while True:
-            eingabe = int(input("X-Pos (Zahl) eingeben: "))
-            if eingabe > 0 and eingabe <= 10:
-                break
-
-            print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
-            continue
-
-        return eingabe
+            eingabe = input("X-Pos (Zahl) eingeben: ")
+            try:
+                if int(eingabe) > 0 and int(eingabe) <= 10:
+                    break
+                print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
+                continue
+            except ValueError:
+                print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
+        return int(eingabe)
 
     def shoot_y(self) -> int:
         """Einlesen Y-Position Schuss"""
@@ -294,6 +306,7 @@ class Spielfeld:
 
             print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
             continue
+
         return letters_to_numbers[eingabe]
 
     def single_shot(self):
@@ -329,19 +342,27 @@ class Spielfeld:
 
     def auto_shooter(self):
         """Automatisch random Schüsse auf Map"""
-
+        time.sleep(Settings.animation_time)
         x = randint(1, 10) - 1
         y = randint(1, 10) - 1
 
         if self.data[x][y] == State.SCHIFF:
             self.data[x][y] = State.GETROFFEN
+            print(f"\n{bcolors.GREEN}-> Treffer!{bcolors.RESET}\n")
             Statistics.ships_hitted += 1
         elif self.data[x][y] == State.GETROFFEN:
             self.data[x][y] = State.GETROFFEN
+            print(
+                f"\n{bcolors.RED}-> Dieses Schiff wurde bereits getroffen!{bcolors.RESET}\n"
+            )
             Statistics.missed_shots += 1
         else:
             self.data[x][y] = State.BESCHOSSEN
             Statistics.missed_shots += 1
+            print(
+                f"\n{bcolors.YELLOW}-> Ins Wasser getroffen...{bcolors.RESET}\n"
+            )
+
         Statistics.rounds += 1
         self.print_field()
         print(
@@ -349,113 +370,130 @@ class Spielfeld:
         )
 
     def print_menu(self):
-        eingabe = 0
-        print(
-            f"{bcolors.TUERKIS_UNDERLINE_BOLD}WILLKOMMEN BEI SCHIFFE VERSENKEN{bcolors.RESET}\n"
-        )
-        print(
-            f"{bcolors.BOLD}[1] Singleplayer\n[2] Multiplayer vs. Bot\n[3] Sandkasten-Modus\n[4] Spielvorführung\n[5] Anleitung\n[6] Einstellungen\n[8] Beenden\n{bcolors.RESET}\n"
-        )
-
-        eingabe = int(
-            input(f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}")
-        )
-        if eingabe == 1:
-            self.game_normal_run()
+        while True:
+            eingabe = 0
             print(
-                f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
+                f"{bcolors.TUERKIS_UNDERLINE_BOLD}WILLKOMMEN BEI SCHIFFE VERSENKEN{bcolors.RESET}\n"
             )
-            ende_auswahl = int(
-                int(
-                    input(
-                        f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+            print(
+                f"{bcolors.BOLD}[1] Singleplayer\n[2] Multiplayer vs. Bot\n[3] Sandkasten-Modus\n[4] Spielvorführung\n[5] Anleitung\n[6] Einstellungen\n[8] Beenden\n{bcolors.RESET}\n"
+            )
+
+            eingabe = input(
+                f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+            )
+            try:
+                eingabe = int(eingabe)
+                if eingabe == 1:
+                    self.game_normal_run()
+                    print(
+                        f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
                     )
-                )
-            )
-            if ende_auswahl == 1:
-                self.clear_Field()
-                self.print_menu()
-            else:
-                sys.exit()
-
-        elif eingabe == 2:
-            feld1.game_multiplayer_vs_bot()
-
-            print(
-                f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
-            )
-            ende_auswahl = int(
-                int(
-                    input(
-                        f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+                    ende_auswahl = int(
+                        input(
+                            f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+                        )
                     )
-                )
-            )
-            if ende_auswahl == 1:
-                feld1.clear_Field()
-                feld2.clear_Field()
-                feld1.print_menu()
-            else:
-                sys.exit()
 
-        elif eingabe == 3:
-            self.game_sandbox_mode()
-            print(
-                f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
-            )
-            ende_auswahl = int(
-                int(
-                    input(
-                        f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+                    if ende_auswahl == 1:
+                        self.clear_Field()
+                        self.print_menu()
+                    else:
+                        break
+
+                elif eingabe == 2:
+                    feld1.game_multiplayer_vs_bot()
+
+                    print(
+                        f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
                     )
-                )
-            )
-            if ende_auswahl == 1:
-                self.clear_Field()
-                self.print_menu()
-            else:
-                sys.exit()
-        elif eingabe == 4:
-            self.game_speedrun()
-            print(
-                f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
-            )
-            ende_auswahl = int(
-                input(f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}")
-            )
-            if ende_auswahl == 1:
-                self.clear_Field()
-                self.print_menu()
-            else:
-                sys.exit()
+                    ende_auswahl = int(
+                        input(
+                            f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+                        )
+                    )
 
-        elif eingabe == 5:
-            print("folgt")
+                    if ende_auswahl == 1:
+                        feld1.clear_Field()
+                        feld2.clear_Field()
+                        feld1.print_menu()
+                    else:
+                        break
 
-        elif eingabe == 6:
-            anz = int(
-                input(
-                    f"{bcolors.BOLD}Anzahl der Schiffe eingeben: {bcolors.RESET}"
-                )
-            )
-            Settings.ship_anz = anz
+                elif eingabe == 3:
+                    self.game_sandbox_mode()
+                    print(
+                        f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
+                    )
+                    ende_auswahl = int(
+                        int(
+                            input(
+                                f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+                            )
+                        )
+                    )
+                    if ende_auswahl == 1:
+                        self.clear_Field()
+                        self.print_menu()
+                    else:
+                        break
 
-            ani_time = float(
-                input(
-                    f"{bcolors.BOLD}Animationsgeschwindigkeit: {bcolors.RESET}"
-                )
-            )
-            Settings.animation_time = ani_time
+                elif eingabe == 4:
+                    self.game_speedrun()
+                    while True:
+                        print(
+                            f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
+                        )
+                        ende_auswahl = input(
+                            f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+                        )
 
-            self.print_menu()
+                        try:
+                            ende_auswahl = int(ende_auswahl)
+                            if ende_auswahl == 1:
+                                self.clear_Field()
+                                self.print_menu()
+                            elif ende_auswahl == 2:
+                                break
+                            else:
+                                break
+                        except ValueError:
+                            print(
+                                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                            )
+                            continue
+                    break
 
-        elif eingabe == 8:
-            sys.exit()
+                elif eingabe == 5:
+                    print("folgt")
 
-        else:
-            raise KeyError(
-                f"{bcolors.RED}Fehler: Ungültige Auswahl{bcolors.RESET}"
-            )
+                elif eingabe == 6:
+                    anz = int(
+                        input(
+                            f"{bcolors.BOLD}Anzahl der Schiffe eingeben: {bcolors.RESET}"
+                        )
+                    )
+                    Settings.ship_anz = anz
+
+                    ani_time = float(
+                        input(
+                            f"{bcolors.BOLD}Animationsgeschwindigkeit: {bcolors.RESET}"
+                        )
+                    )
+                    Settings.animation_time = ani_time
+
+                    self.print_menu()
+
+                elif eingabe == 8:
+                    break
+
+                else:
+                    raise KeyError(
+                        f"{bcolors.RED}Fehler: Ungültige Auswahl{bcolors.RESET}"
+                    )
+            except:
+                print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
+        sys.exit()
 
     def print_field(self):
         """Ausgeben des Feldes und setzen der Schiffe"""
@@ -486,14 +524,31 @@ class Spielfeld:
 
     def reset_statistics(self):
         Statistics.rounds = 0
-        Statistics.missed_shots = 0
+        Statistics.rounds_player1 = 0
+        Statistics.rounds_player2 = 0
         Statistics.ships_hitted = 0
+        Statistics.ships_hitted_player1 = 0
+        Statistics.ships_hitted_player2 = 0
+        Statistics.missed_shots = 0
+        Statistics.missed_shots_player1 = 0
+        Statistics.missed_shots_player2 = 0
         Statistics.last_x = 0
         Statistics.last_y = 0
 
     def print_statistics(self):
 
         print("Schüsse Gesamt:", Statistics.rounds)
+        print("Treffer bei Schiffen:", Statistics.ships_hitted)
+        print("Verfehlte Schüsse:", Statistics.missed_shots)
+
+    def print_statistics_multiplayer(self):
+        print(f"{bcolors.BLUE}Spieler Statistiken:{bcolors.RESET}")
+        print("Schüsse Gesamt:", Statistics.rounds_player1)
+        print("Treffer bei Schiffen:", Statistics.ships_hitted)
+        print("Verfehlte Schüsse:", Statistics.missed_shots)
+
+        print(f"\n{bcolors.BLUE}Gegner Statistiken:{bcolors.RESET}")
+        print("Schüsse Gesamt:", Statistics.rounds_player2)
         print("Treffer bei Schiffen:", Statistics.ships_hitted)
         print("Verfehlte Schüsse:", Statistics.missed_shots)
 
@@ -504,9 +559,34 @@ class Spielfeld:
                 if self.data[x][y] == State.SCHIFF:
                     return 1
         print(
-            f"{bcolors.TUERKIS_UNDERLINE}Glückwunsch - Du hast alle Schiffe versenkt!{bcolors.RESET}"
+            f"{bcolors.TUERKIS_UNDERLINE}Gewonnen - Du hast alle Schiffe versenkt!{bcolors.RESET}"
         )
         self.print_statistics()
+        return 0
+
+    def victory_check_player(self):
+        """Checken ob Spieler zuerst alle Schiffe versenkt hat im Multiplayer"""
+        for y in range(feld2.hoehe):
+            for x in range(feld2.breite):
+                if feld2.data[x][y] == State.SCHIFF:
+                    return 1
+        print(
+            f"{bcolors.TUERKIS_UNDERLINE}Gewonnen - Du hast alle Schiffe versenkt!{bcolors.RESET}"
+        )
+
+        self.print_statistics_multiplayer()
+        return 0
+
+    def victory_check_enemy(self):
+        """Checken ob Gegner zuerst alle Schiffe versenkt hat im Multiplayer"""
+        for y in range(feld1.hoehe):
+            for x in range(feld1.breite):
+                if feld1.data[x][y] == State.SCHIFF:
+                    return 1
+        print(
+            f"{bcolors.TUERKIS_UNDERLINE}Verloren - Dein Gegner hat alle Schiffe versenkt!{bcolors.RESET}"
+        )
+        self.print_statistics_multiplayer()
         return 0
 
     def game_speedrun(self):
@@ -582,12 +662,43 @@ class Spielfeld:
             raise KeyError(
                 f"{bcolors.RED}Fehler: Ungültige Auswahl{bcolors.RESET}"
             )
-
+        clear()
         print(
             f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Multiplayer vs. Bot{bcolors.RESET}\n"
         )
+        print(f"{bcolors.TUERKIS_UNDERLINE}Dein Feld:{bcolors.RESET}\n")
         feld1.print_field()
+        print(
+            f"\n{bcolors.TUERKIS_UNDERLINE}Gegner Feld (Bot):{bcolors.RESET}\n"
+        )
         feld2.print_field()
+        time.sleep(5)
+        clear()
+
+        while feld2.victory_check() != 0:
+            print(f"\n{bcolors.TUERKIS_UNDERLINE}Dein Zug:{bcolors.RESET}\n")
+            feld2.print_field()
+            feld2.single_shot()
+            feld2.print_field()
+            print(
+                f"{bcolors.UNDERLINE}Letzter Schuss:{bcolors.RESET} {Statistics.last_y}{Statistics.last_x}\n"
+            )
+            Statistics.rounds_player1 += 1
+            # time.sleep(5)
+            # clear()
+            if self.victory_check_player() == 0:
+                break
+
+            print(
+                f"\n{bcolors.TUERKIS_UNDERLINE}Gegner (Bot) spielt:{bcolors.RESET}\n"
+            )
+            feld1.print_field()
+            feld1.auto_shooter()
+            Statistics.rounds_player2 += 1
+            # time.sleep(7)
+            # clear()
+            if self.victory_check_enemy() == 0:
+                break
 
 
 # Spielfeld erstellen
