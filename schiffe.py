@@ -46,9 +46,8 @@ class Schiff:
             eingabe = str(input("Y-Pos (Buchstabe) eingeben: ")).upper()
             if eingabe in "ABCDEFGHIJ":
                 break
-            else:
-                print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
-                continue
+            print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
+            continue
 
         return letters_to_numbers[eingabe] - 1
 
@@ -56,11 +55,22 @@ class Schiff:
         """Einlesen X-Position Schiff"""
 
         while True:
-            eingabe = int(input("X-Pos (Zahl) eingeben: "))
-            if eingabe > 0 and eingabe <= 10:
-                break
-            else:
-                print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
+            eingabe = input("X-Pos (Zahl) eingeben: ")
+            try:
+                if int(eingabe) > 0 and int(eingabe) <= 10:
+                    break
+                print(f"{bcolors.RED}Fehler: Ungültige Eingabe1{bcolors.RESET}")
                 continue
+            except:
+                print(f"{bcolors.RED}Fehler: Ungültige Eingabe2{bcolors.RESET}")
 
         return eingabe - 1
+
+        #while True:
+        #    eingabe = input("X-Pos (Zahl) eingeben: ")
+        #   if int(eingabe) > 0 and int(eingabe) <= 10:
+        #        break
+        #    print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
+        #    continue
+        #
+        #return eingabe - 1

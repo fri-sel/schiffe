@@ -162,14 +162,27 @@ class Spielfeld:
     def lese_position(self):
         """Einlesen einer Position"""
 
-        print(
-            f"{bcolors.UNDERLINE}Wo soll das Schiff platziert werden?{bcolors.RESET}"
-        )
-        eingabe = str(input("Y-Pos (Buchstabe) eingeben: "))
+        while True:
+            print(
+                f"{bcolors.UNDERLINE}Wo soll das Schiff platziert werden?{bcolors.RESET}\n"
+            )
+            eingabe = str(input("Y-Pos (Buchstabe) eingeben: ")).upper()
+            if eingabe in "ABCDEFGHIJ":
+                break
+            print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
+            continue
 
-        y = letters_to_numbers[eingabe.upper()]
+        y = eingabe
 
-        eingabe = int(input("X-Pos (Zahl) eingeben: "))
+        while True:
+            eingabe = input("X-Pos (Zahl) eingeben: ")
+            try:
+                if int(eingabe) > 0 and int(eingabe) <= 10:
+                    break
+                print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
+                continue
+            except:
+                print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
 
         x = eingabe
 
@@ -977,7 +990,7 @@ class Spielfeld:
                                 continue
                             except:
                                 print(
-                                    f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                                    f"{bcolors.RED}Fehler: Ungültige Eingabe1{bcolors.RESET}"
                                 )
                         ask_way_of_adding_ships = False
                     elif int(auswahl) == 2:
@@ -987,7 +1000,7 @@ class Spielfeld:
                         f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
                     )
                     continue
-                print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
+                print(f"{bcolors.RED}Fehler: Ungültige Eingabe2{bcolors.RESET}")
                 continue
 
             except ValueError:
