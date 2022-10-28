@@ -7,7 +7,6 @@ from direction import Direction
 from schiessen import letters_to_numbers
 
 
-# from typing import List, Tuple
 class Schiff:
     """Klasse zur Repräsentierung der Schiffe"""
 
@@ -34,22 +33,20 @@ class Schiff:
             except ValueError:
                 print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
 
-        return eingabe
+        return int(eingabe)
 
     def posy(self) -> int:
         """Einlesen Y-Position Schiff"""
 
         while True:
             print(
-            f"{bcolors.UNDERLINE}Wo soll das Schiff platziert werden?{bcolors.RESET}\n"
+                f"{bcolors.UNDERLINE}Wo soll das Schiff platziert werden?{bcolors.RESET}\n"
             )
             eingabe = str(input("Y-Pos (Buchstabe) eingeben: ")).upper()
             if eingabe in "ABCDEFGHIJ":
                 break
             else:
-                print(
-                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
-                )
+                print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
                 continue
 
         return letters_to_numbers[eingabe] - 1
@@ -62,9 +59,7 @@ class Schiff:
             if eingabe > 0 and eingabe <= 10:
                 break
             else:
-                print(
-                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
-                )
+                print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
                 continue
 
         return eingabe - 1
