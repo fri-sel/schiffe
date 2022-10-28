@@ -492,7 +492,9 @@ class Spielfeld:
         )
 
     def print_menu(self):
-        while True:
+        ask_menu_option = True
+        while ask_menu_option:
+            eingabe = 0
             print(
                 f"{bcolors.TUERKIS_UNDERLINE_BOLD}WILLKOMMEN BEI SCHIFFE VERSENKEN{bcolors.RESET}\n"
             )
@@ -507,80 +509,44 @@ class Spielfeld:
                 Settings.modus = int(Settings.modus)
                 if Settings.modus == 1:
                     self.game_normal_run()
-                    print(
-                        f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
-                    )
-                    ende_auswahl = int(
-                        input(
-                            f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+                    ask_end_game = True
+                    while ask_end_game:
+                        print(
+                            f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
                         )
-                    )
-
-                    if ende_auswahl == 1:
-                        self.clear_Field()
-                        self.print_menu()
-                    else:
-                        break
-
-                elif Settings.modus == 2:
-                    self.game_player_vs_bot()
-
-                    print(
-                        f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
-                    )
-                    ende_auswahl = int(
-                        input(
-                            f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
-                        )
-                    )
-
-                    if ende_auswahl == 1:
-                        feld1.clear_Field()
-                        feld2.clear_Field()
-                        feld1.print_menu()
-                    else:
-                        break
-
-                elif Settings.modus == 3:
-                    self.game_player_vs_player()
-
-                    print(
-                        f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
-                    )
-                    ende_auswahl = int(
-                        input(
-                            f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
-                        )
-                    )
-
-                    if ende_auswahl == 1:
-                        feld1.clear_Field()
-                        feld2.clear_Field()
-                        feld1.print_menu()
-                    else:
-                        break
-
-                elif Settings.modus == 4:
-                    self.game_sandbox_mode()
-                    print(
-                        f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
-                    )
-                    ende_auswahl = int(
-                        int(
+                        ende_auswahl = int(
                             input(
                                 f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
                             )
                         )
-                    )
-                    if ende_auswahl == 1:
-                        self.clear_Field()
-                        self.print_menu()
-                    else:
-                        break
+                        try:
+                            if int(ende_auswahl) > 0 and int(ende_auswahl) <= 2:
+                                if int(ende_auswahl) == 1:
+                                    ask_end_game = False
+                                    self.clear_Field()
+                                    self.print_menu()
+                                elif int(ende_auswahl) == 2:
+                                    ask_end_game = False
+                                    break
+                                print(
+                                    f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                                )
+                                continue
+                            print(
+                                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                            )
+                            continue
+                        except:
+                            print(
+                                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                            )
+                            continue
+                    ask_menu_option = False
 
-                elif Settings.modus == 5:
-                    self.game_speedrun()
-                    while True:
+                elif Settings.modus == 2:
+                    feld1.game_player_vs_bot()
+                    ask_end_game = True
+                    while ask_end_game:
                         print(
                             f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
                         )
@@ -589,41 +555,171 @@ class Spielfeld:
                         )
 
                         try:
-                            ende_auswahl = int(ende_auswahl)
-                            if ende_auswahl == 1:
-                                self.clear_Field()
-                                self.print_menu()
-                            elif ende_auswahl == 2:
-                                break
-                            else:
-                                break
-                        except ValueError:
+                            if int(ende_auswahl) > 0 and int(ende_auswahl) <= 2:
+                                if int(ende_auswahl) == 1:
+                                    ask_end_game = False
+                                    self.clear_Field()
+                                    self.print_menu()
+                                elif int(ende_auswahl) == 2:
+                                    ask_end_game = False
+                                    break
+                                print(
+                                    f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                                )
+                                continue
                             print(
                                 f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
                             )
                             continue
-                    break
+                        except:
+                            print(
+                                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                            )
+                            continue
+                    ask_menu_option = False
+
+                elif Settings.modus == 3:
+                    feld1.game_player_vs_player()
+                    ask_end_game = True
+                    while ask_end_game:
+                        print(
+                            f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
+                        )
+                        ende_auswahl = input(
+                            f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+                        )
+
+                        try:
+                            if int(ende_auswahl) > 0 and int(ende_auswahl) <= 2:
+                                if int(ende_auswahl) == 1:
+                                    ask_end_game = False
+                                    self.clear_Field()
+                                    self.print_menu()
+                                elif int(ende_auswahl) == 2:
+                                    ask_end_game = False
+                                    break
+                                print(
+                                    f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                                )
+                                continue
+                            print(
+                                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                            )
+                            continue
+                        except:
+                            print(
+                                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                            )
+                            continue
+                    ask_menu_option = False
+
+                elif Settings.modus == 4:
+                    self.game_sandbox_mode()
+                    ask_end_game = True
+                    while ask_end_game:
+                        print(
+                            f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
+                        )
+                        ende_auswahl = input(
+                            f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+                        )
+
+                        try:
+                            if int(ende_auswahl) > 0 and int(ende_auswahl) <= 2:
+                                if int(ende_auswahl) == 1:
+                                    ask_end_game = False
+                                    self.clear_Field()
+                                    self.print_menu()
+                                elif int(ende_auswahl) == 2:
+                                    ask_end_game = False
+                                    break
+                                print(
+                                    f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                                )
+                                continue
+                            print(
+                                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                            )
+                            continue
+                        except:
+                            print(
+                                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                            )
+                            continue
+                    ask_menu_option = False
+
+                elif Settings.modus == 5:
+                    self.game_speedrun()
+                    ask_end_game = True
+                    while ask_end_game:
+                        print(
+                            f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
+                        )
+                        ende_auswahl = input(
+                            f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+                        )
+
+                        try:
+                            if int(ende_auswahl) > 0 and int(ende_auswahl) <= 2:
+                                if int(ende_auswahl) == 1:
+                                    ask_end_game = False
+                                    self.clear_Field()
+                                    self.print_menu()
+                                elif int(ende_auswahl) == 2:
+                                    ask_end_game = False
+                                    break
+                                print(
+                                    f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                                )
+                                continue
+                            print(
+                                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                            )
+                            continue
+                        except:
+                            print(
+                                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                            )
+                            continue
+                    ask_menu_option = False
 
                 elif Settings.modus == 6:
                     anleitung = open("anleitung.html")
                     for line in anleitung:
                         print(line.rstrip())
                     anleitung.close()
-                    print(
-                        f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
-                    )
-                    ende_auswahl = int(
-                        int(
-                            input(
-                                f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
-                            )
+                    ask_end_game = True
+                    while ask_end_game:
+                        print(
+                            f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
                         )
-                    )
-                    if ende_auswahl == 1:
-                        self.clear_Field()
-                        self.print_menu()
-                    else:
-                        break
+                        ende_auswahl = input(
+                            f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+                        )
+
+                        try:
+                            if int(ende_auswahl) > 0 and int(ende_auswahl) <= 2:
+                                if int(ende_auswahl) == 1:
+                                    ask_end_game = False
+                                    self.clear_Field()
+                                    self.print_menu()
+                                elif int(ende_auswahl) == 2:
+                                    ask_end_game = False
+                                    break
+                                print(
+                                    f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                                )
+                                continue
+                            print(
+                                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                            )
+                            continue
+                        except:
+                            print(
+                                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                            )
+                            continue
+                    ask_menu_option = False
 
                 elif Settings.modus == 7:
                     option = 0
@@ -666,13 +762,13 @@ class Spielfeld:
                         break
 
                 elif Settings.modus == 8:
-                    break
+                    ask_menu_option = False
 
                 else:
-                    raise KeyError(
+                    raise ValueError(
                         f"{bcolors.RED}Fehler: Ungültige Auswahl{bcolors.RESET}"
                     )
-            except:
+            except ValueError:
                 print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
         sys.exit()
 
@@ -839,29 +935,49 @@ class Spielfeld:
 
     def game_player_vs_bot(self):
         """Spieler gegen Computer Spielmodus"""
-        print(f"{bcolors.BOLD_UNDERLINE}Spielart wählen:{bcolors.RESET}\n")
-        auswahl = int(
-            input(
+        ask_way_of_adding_ships = True
+        while ask_way_of_adding_ships:
+            print(f"{bcolors.BOLD_UNDERLINE}Spielart wählen{bcolors.RESET}\n")
+            auswahl = input(
                 f"{bcolors.UNDERLINE}Wie sollen die Schiffe platziert werden?{bcolors.RESET}\n[1] Selber hinzufügen\n[2] Automatisch hinzufügen\nEingabe: "
             )
-        )
-        if auswahl == 1:
-            anz = int(
-                input(
-                    f"{bcolors.UNDERLINE}Wie viele Schiffe sollen platziert werden?: {bcolors.RESET}"
-                )
-            )
-            Settings.ship_anz = anz
-            for anz in range(anz):
-                self.create_ships_on_both_maps()
+            try:
+                if int(auswahl) > 0 and int(auswahl) <= 2:
+                    if int(auswahl) == 1:
+                        ask_number_ships = True
+                        while ask_number_ships:
+                            anz = input(
+                                f"{bcolors.UNDERLINE}Wie viele Schiffe sollen platziert werden?: {bcolors.RESET}"
+                            )
+                            try:
+                                if int(anz) >= 0 and int(anz) <= 25:
+                                    print("Richtige Anzahl ausgewählt!")
+                                    anz = int(anz)
+                                    Settings.ship_anz = anz
+                                    for anz in range(anz):
+                                        self.create_ships_on_both_maps()
+                                    ask_number_ships = False
+                                print(
+                                    f"{bcolors.RED}Fehler: Max. 25 Schiffe erlaubt!{bcolors.RESET}"
+                                )
+                                continue
+                            except:
+                                print(
+                                    f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                                )
+                        ask_way_of_adding_ships = False
+                    elif int(auswahl) == 2:
+                        self.auto_add_ships_on_both_maps()
+                        break
+                    print(
+                        f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                    )
+                    continue
+                print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
+                continue
 
-        elif auswahl == 2:
-            self.auto_add_ships_on_both_maps()
-
-        else:
-            raise KeyError(
-                f"{bcolors.RED}Fehler: Ungültige Auswahl{bcolors.RESET}"
-            )
+            except ValueError:
+                print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
         clear()
         print(
             f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Spieler vs. Bot{bcolors.RESET}\n"
