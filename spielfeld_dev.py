@@ -978,7 +978,6 @@ class Spielfeld:
                             )
                             try:
                                 if int(anz) >= 0 and int(anz) <= 25:
-                                    print("Richtige Anzahl ausgewählt!")
                                     anz = int(anz)
                                     Settings.ship_anz = anz
                                     for anz in range(anz):
