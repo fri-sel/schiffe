@@ -26,10 +26,8 @@ class Schiff:
             try:
                 if int(eingabe) > 0 and int(eingabe) < 5:
                     ask_ship_lenght = False
-                    print(
-                        f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
-                    )
-
+                    break
+                print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
                 continue
             except ValueError:
                 print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")

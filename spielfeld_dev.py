@@ -15,7 +15,7 @@ from schiffe import Schiff
 
 clear = lambda: os.system("clear")
 
-# from schiessen import Schuss
+
 class State(Enum):
     """Enum Kodierung Spielfeldzeilen"""
 
@@ -309,6 +309,7 @@ class Spielfeld:
             ) from e
 
     def set_all_ship(self):
+        """Alle Felder zu Schiffen setzen"""
         for y in range(self.hoehe):
             for x in range(self.breite):
                 self.data[x][y] = State.SCHIFF
@@ -376,6 +377,8 @@ class Spielfeld:
     def auto_shooter_normal(self):
         """Automatisch random Schüsse auf Map"""
         time.sleep(Settings.animation_time)
+        if Settings.modus == 5:
+            clear()
         x = randint(1, 10) - 1
         y = randint(1, 10) - 1
 
@@ -410,6 +413,8 @@ class Spielfeld:
     def auto_shooter_medium(self):
         """Automatisch random Schüsse auf Map"""
         time.sleep(Settings.animation_time)
+        if Settings.modus == 5:
+            clear()
         x = randint(1, 10) - 1
         y = randint(1, 10) - 1
 
@@ -451,7 +456,8 @@ class Spielfeld:
     def auto_shooter_hard(self):
         """Automatisch random Schüsse auf Map"""
         time.sleep(Settings.animation_time)
-
+        if Settings.modus == 5:
+            clear()
         x = randint(1, 10) - 1
         y = randint(1, 10) - 1
 
@@ -492,6 +498,8 @@ class Spielfeld:
         )
 
     def print_menu(self):
+        """Menü ausgeben"""
+        clear()
         ask_menu_option = True
         while ask_menu_option:
             eingabe = 0
@@ -508,6 +516,7 @@ class Spielfeld:
             try:
                 Settings.modus = int(Settings.modus)
                 if Settings.modus == 1:
+                    clear()
                     self.game_normal_run()
                     ask_end_game = True
                     while ask_end_game:
@@ -544,6 +553,7 @@ class Spielfeld:
                     ask_menu_option = False
 
                 elif Settings.modus == 2:
+                    clear()
                     feld1.game_player_vs_bot()
                     ask_end_game = True
                     while ask_end_game:
@@ -558,7 +568,8 @@ class Spielfeld:
                             if int(ende_auswahl) > 0 and int(ende_auswahl) <= 2:
                                 if int(ende_auswahl) == 1:
                                     ask_end_game = False
-                                    self.clear_Field()
+                                    feld1.clear_Field()
+                                    feld2.clear_Field()
                                     self.print_menu()
                                 elif int(ende_auswahl) == 2:
                                     ask_end_game = False
@@ -579,6 +590,7 @@ class Spielfeld:
                     ask_menu_option = False
 
                 elif Settings.modus == 3:
+                    clear()
                     feld1.game_player_vs_player()
                     ask_end_game = True
                     while ask_end_game:
@@ -593,7 +605,8 @@ class Spielfeld:
                             if int(ende_auswahl) > 0 and int(ende_auswahl) <= 2:
                                 if int(ende_auswahl) == 1:
                                     ask_end_game = False
-                                    self.clear_Field()
+                                    feld1.clear_Field()
+                                    feld2.clear_Field()
                                     self.print_menu()
                                 elif int(ende_auswahl) == 2:
                                     ask_end_game = False
@@ -614,6 +627,7 @@ class Spielfeld:
                     ask_menu_option = False
 
                 elif Settings.modus == 4:
+                    clear()
                     self.game_sandbox_mode()
                     ask_end_game = True
                     while ask_end_game:
@@ -649,6 +663,7 @@ class Spielfeld:
                     ask_menu_option = False
 
                 elif Settings.modus == 5:
+                    clear()
                     self.game_speedrun()
                     ask_end_game = True
                     while ask_end_game:
@@ -684,7 +699,8 @@ class Spielfeld:
                     ask_menu_option = False
 
                 elif Settings.modus == 6:
-                    anleitung = open("anleitung.html")
+                    clear()
+                    anleitung = open("anleitung.txt")
                     for line in anleitung:
                         print(line.rstrip())
                     anleitung.close()
@@ -722,6 +738,7 @@ class Spielfeld:
                     ask_menu_option = False
 
                 elif Settings.modus == 7:
+                    clear()
                     option = 0
                     print(
                         f"{bcolors.BOLD}[1] Anzahl Schiffe\n[2] Animationsgeschwindigkeit\n[3] Bot Schwierigkeit{bcolors.RESET}\n"
@@ -814,7 +831,6 @@ class Spielfeld:
         Settings.treffer.clear()
 
     def print_statistics(self):
-
         print("Schüsse Gesamt:", Statistics.rounds)
         print("Treffer bei Schiffen:", Statistics.ships_hitted)
         print("Verfehlte Schüsse:", Statistics.missed_shots)
@@ -840,7 +856,7 @@ class Spielfeld:
             f"{bcolors.TUERKIS_UNDERLINE}Gewonnen - Du hast alle Schiffe versenkt!{bcolors.RESET}"
         )
         self.print_statistics()
-        print(Settings.treffer)
+        self.clear_Field()
         return 0
 
     def victory_check_player(self):
@@ -860,6 +876,7 @@ class Spielfeld:
             )
 
         self.print_statistics_multiplayer()
+        self.clear_Field()
         return 0
 
     def victory_check_enemy(self):
@@ -878,10 +895,12 @@ class Spielfeld:
             )
 
         self.print_statistics_multiplayer()
+        self.clear_Field()
         return 0
 
     def game_speedrun(self):
-        """Schnelldurchlauf des Spiels zum Testen"""
+        """Schnelldurchlauf des Spiels"""
+        clear()
         print(
             f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Spielvorführung{bcolors.RESET}\n"
         )
@@ -911,19 +930,35 @@ class Spielfeld:
             print(
                 f"{bcolors.UNDERLINE}Letzter Schuss:{bcolors.RESET} {Statistics.last_y}{Statistics.last_x}\n"
             )
+            time.sleep(5)
+            clear()
+            self.print_field()
 
     def game_sandbox_mode(self):
         """Sandkastenmodus: Selbst Schiffe platzieren"""
-        ship_anz = int(
-            input(
+        ask_number_ships = True
+        while ask_number_ships:
+            ship_anz = input(
                 f"{bcolors.BOLD}Wie viele Schiffe sollen platziert werden?: {bcolors.RESET}"
             )
-        )
-        for ship_anz in range(ship_anz):
-            self.create_ship()
-        print(
-            f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Sandkastenmodus{bcolors.RESET}\n"
-        )
+            try:
+                if int(ship_anz) >= 0 and int(ship_anz) <= 25:
+                    ship_anz = int(ship_anz)
+                    Settings.ship_anz = ship_anz
+                    for ship_anz in range(ship_anz):
+                        self.create_ship()
+                    ask_number_ships = False
+                    clear()
+                print(
+                    f"{bcolors.RED}Fehler: Max. 25 Schiffe erlaubt!{bcolors.RESET}"
+                )
+                continue
+            except:
+                print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
+            print(
+                f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Sandkastenmodus{bcolors.RESET}\n"
+            )
+
         self.print_field()
         while self.victory_check() != 0:
             self.single_shot()
@@ -932,6 +967,9 @@ class Spielfeld:
             print(
                 f"{bcolors.UNDERLINE}Letzter Schuss:{bcolors.RESET} {Statistics.last_y}{Statistics.last_x}\n"
             )
+            time.sleep(5)
+            clear()
+            self.print_field()
 
     def game_player_vs_bot(self):
         """Spieler gegen Computer Spielmodus"""
@@ -951,7 +989,6 @@ class Spielfeld:
                             )
                             try:
                                 if int(anz) >= 0 and int(anz) <= 25:
-                                    print("Richtige Anzahl ausgewählt!")
                                     anz = int(anz)
                                     Settings.ship_anz = anz
                                     for anz in range(anz):
@@ -1112,35 +1149,6 @@ class Spielfeld:
 # Spielfeld erstellen
 feld1 = Spielfeld(10, 10)
 feld2 = Spielfeld(10, 10)
-# feld1.change_field(5, 5)
-
-# Schiffe per Code adden und platzieren
-# s1 = Schiff(2, Direction.LINKS)
-# s2 = Schiff(2, Direction.RECHTS)
-# s3 = Schiff(3, Direction.OBEN)
-# s4 = Schiff(3, Direction.UNTEN)
-# s5 = Schiff(4, Direction.OBEN)
-
-# feld1.add_ship(s1, 8, 8)
-# feld1.add_ship(s2, 2, 2)
-# feld1.add_ship(s3, 10, 10)
-# feld1.add_ship(s4, 8, 2)
-# feld1.add_ship(s5, 5, 9)
-
-# Schiffe per Nutzereingabe erstellen und platzieren
-# feld1.create_ship()
-# feld1.auto_add_ships()
-
-# Ausgabe Feld
-# feld1.print_field()
-
-# Schießen
-# feld1.single_shot()
-# feld1.auto_shooter()
-
-# Spielablauf und Ende
-# feld1.game_speedrun()
-# feld1.game_normal_run()
 
 # Menü printen
 feld1.print_menu()

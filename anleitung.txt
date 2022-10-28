@@ -21,32 +21,32 @@ Allgemein:
 
 » Mit der Eingabe von Zahlen können die entsprechenden Menüpunkte gewählt werden.
 » Das Feld auf was du schießen möchtest wählst du mit einem Buchstaben(A-J) und einer Zahl(1-10):
-	» Die Buchstaben stehen dabei für die x-Achse
-	» Die Zahlen repräsentieren die y-Achse
+  » Die Buchstaben stehen dabei für die x-Achse
+  » Die Zahlen repräsentieren die y-Achse
 
 » Schiffe können je nach gewähltem Spielmodus automatisch erstellt werden oder auch manuell platziert werden.
-	» Sollen Schiffe manuell platziert werden, kannst du aus vier verschiedenen Schiffsarten bzw.Schiffslängen wählen.
-		» 1er Schiffe, 2er Schiffe, 3er Schiffe, 4er Schiffe
-	» Zusätlich musst du eine Koordinate sowie eine Richtung (rechts, links, unten, oben) für die Platzierung der Schiffe wählen.
+  » Sollen Schiffe manuell platziert werden, kannst du aus vier verschiedenen Schiffsarten bzw.Schiffslängen wählen.
+	» 1er Schiffe, 2er Schiffe, 3er Schiffe, 4er Schiffe
+  » Zusätlich musst du eine Koordinate sowie eine Richtung (rechts, links, unten, oben) für die Platzierung der Schiffe wählen.
 
 Wähle einen Spielmodus:
 
-	» Singleplayer
-		» Du wählst ein bestimmtest Feld aus, auf was du schießen möchtest um ein Schiff zu treffen.
-		» Dies wird solange wiederholt bis alle Schiffe versenkt wurden
+» Singleplayer
+  » Du wählst ein bestimmtest Feld aus, auf was du schießen möchtest um ein Schiff zu treffen.
+  » Dies wird solange wiederholt bis alle Schiffe versenkt wurden
 
-	» Player vs. Bot
-		» Dieser Spielmodus funktioniert genau so wie der Singleplayer, nur dass du hier gegen einen Bot spielst.
-		» Bedeutet in diesem Modus kannst du auch verlieren.
-		» Desweiteren hast du die Wahl deine Schiffe manuell zu wählen/platzieren oder diese automatisch platzieren zu lassen.
+» Player vs. Bot
+  » Dieser Spielmodus funktioniert genau so wie der Singleplayer, nur dass du hier gegen einen Bot spielst.
+  » Bedeutet in diesem Modus kannst du auch verlieren.
+  » Desweiteren hast du die Wahl deine Schiffe manuell zu wählen/platzieren oder diese automatisch platzieren zu lassen.
 
-	» Player vs. Player
-		» Wenn du diesen Spielmoduswählst, kannst du gegen einen Freund dein können im Schiffe Versenken beweisen.
-		» Auch hier hast du die Möglichkeit zu wählen, ob du deine Schiffe manuell wählen und platzieren willst
-		  oder dies automatisch geschehen zu lassen.
+» Player vs. Player
+  » Wenn du diesen Spielmoduswählst, kannst du gegen einen Freund dein können im Schiffe Versenken beweisen.
+  » Auch hier hast du die Möglichkeit zu wählen, ob du deine Schiffe manuell wählen und platzieren willst
+	oder dies automatisch geschehen zu lassen.
 
-	» Sandkasten
-		» Du kannst Schiffe manuell platzieren und diese abschießen
+» Sandkasten
+  » Du kannst Schiffe manuell platzieren und diese abschießen
 
-	» Spielvorführung
-		» Zeigt dir einen möglichen Spielablauf bzw. wie ein Bot auf das Spielfeld mit den Schiffen schießt.
+» Spielvorführung
+  » Zeigt dir einen möglichen Spielablauf bzw. wie ein Bot auf das Spielfeld mit den Schiffen schießt.
