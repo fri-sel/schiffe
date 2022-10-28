@@ -1,5 +1,5 @@
 # Gruppenprojekt "Schiffe Versenken"
-***
+
 <h2>Beschreibung:</h2>
 Ein Programm mit welchem es möglich ist Schiffe Versenken zu spielen.<br />
 <p>Wenn das Programm gestartet wird, ist ein Menü mit verschienden Auswahlmöglichkeiten wie "Singleplayer", "Player vs. Bot" oder "Einstellungen" zu sehen. Per Eingabe der Zahl des entsprechenden Menüpunktes, kann dieser aufgerufen werden.</p>
