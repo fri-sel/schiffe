@@ -18,14 +18,17 @@ class Schiff:
     @staticmethod
     def einlesen() -> int:
         """Einlesen Schiffslänge"""
-        print(
-            f"{bcolors.UNDERLINE}Was für ein Schiff soll hinzugefügt werden?{bcolors.RESET}\n 1: 1er Schiff\n 2: 2er Schiff\n 3: 3er Schiff\n 4: 4er Schiff"
-        )
-        eingabe = int(input("Schifflänge eingeben: "))
-        if eingabe < 1 or eingabe > 4:
-            raise KeyError(
-                f"{bcolors.RED}Fehler: Ungültige Länge angegeben{bcolors.RESET}"
+        while True:
+            print(
+                f"{bcolors.UNDERLINE}Was für ein Schiff soll hinzugefügt werden?{bcolors.RESET}\n 1: 1er Schiff\n 2: 2er Schiff\n 3: 3er Schiff\n 4: 4er Schiff"
             )
+            eingabe = int(input("Schifflänge eingeben: "))
+            if eingabe > 0 or eingabe < 5:
+                break
+            print(
+            f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+            )
+            continue
 
         return eingabe
 
