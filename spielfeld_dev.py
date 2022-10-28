@@ -914,13 +914,27 @@ class Spielfeld:
 
     def game_sandbox_mode(self):
         """Sandkastenmodus: Selbst Schiffe platzieren"""
-        ship_anz = int(
-            input(
-                f"{bcolors.BOLD}Wie viele Schiffe sollen platziert werden?: {bcolors.RESET}"
+        ask_number_ships = True
+        while ask_number_ships:
+            anz = input(
+            f"{bcolors.UNDERLINE}Wie viele Schiffe sollen platziert werden?: {bcolors.RESET}"
             )
-        )
-        for ship_anz in range(ship_anz):
-            self.create_ship()
+            try:
+                if int(anz) >= 0 and int(anz) <= 25:
+                    print("Richtige Anzahl ausgewählt!")
+                    anz = int(anz)
+                    Settings.ship_anz = anz
+                    for anz in range(anz):
+                        self.create_ships_on_both_maps()
+                    ask_number_ships = False
+                print(
+                f"{bcolors.RED}Fehler: Max. 25 Schiffe erlaubt!{bcolors.RESET}"
+                )
+                continue
+            except:
+                print(
+                f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                )
         print(
             f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Sandkastenmodus{bcolors.RESET}\n"
         )
