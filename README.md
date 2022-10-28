@@ -11,10 +11,10 @@ Ein Programm mit welchem es möglich ist Schiffe Versenken zu spielen.<br />
 <p>❌ = Getroffen</p>
 
 <h2> Dokumentation:</h2>
-<br /> <a href="https://github.com/fri-sel/schiffe/wiki/Dokumentation-des-Projekts:-%22Schiffe-Versenken%22">Hier kommt ihr zu unserer Dokumentation.</a> <br />
+ <a href="https://github.com/fri-sel/schiffe/wiki/Dokumentation-des-Projekts:-%22Schiffe-Versenken%22">Hier kommt ihr zu unserer Dokumentation.</a> 
 
 <h2>Anleitung:</h2>
-<br /> <a href="https://github.com/fri-sel/schiffe/wiki/Anleitung"> Falls nötig findet ihr hier eine Anleitung zu unserem Schiffe Versenken. </a> <br />
+ <a href="https://github.com/fri-sel/schiffe/wiki/Anleitung"> Falls nötig findet ihr hier eine Anleitung zu unserem Schiffe Versenken. </a> 
 
 <h2>Designentscheidungen:</h2>
-<br /> <a href="https://github.com/fri-sel/schiffe/wiki/Designentscheidungen"> Wen es interessiert kann hier die Designentscheidungen zu unserem Schiffe Versenken finden.</a> <br />
+ <a href="https://github.com/fri-sel/schiffe/wiki/Designentscheidungen"> Wen es interessiert kann hier die Designentscheidungen zu unserem Schiffe Versenken finden.</a> 
