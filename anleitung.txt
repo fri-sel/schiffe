@@ -20,20 +20,20 @@
 **Allgemein:**
 <ul>
 <li>Mit der Eingabe von Zahlen können die entsprechenden Menüpunkte gewählt werden.
-<li>Das Feld auf was du schißen möchtest wählst du mit einem Buchstaben(A-J) und einer Zahl(1-10):
+<li>Das Feld auf was du schießen möchtest wählst du mit einem Buchstaben(A-J) und einer Zahl(1-10):
 <ul>
 <li>Die Buchstaben stehen dabei für die x-Achse
 <li>Die Zahlen repräsentieren die y-Achse
 </ul>
 </li>
-<li> Schiffe können je nach gewähltem Spielmodus automatisch erstellt werden oder auch selbst platziert werden.
+<li> Schiffe können je nach gewähltem Spielmodus automatisch erstellt werden oder auch manuell platziert werden.
 <ul>
-<li>Sollen schiffe selbst platziert werden, kannst du aus vier verschiedenen Schiffsarten bzw. Schiffslängen wählen.
+<li>Sollen Schiffe manuell platziert werden, kannst du aus vier verschiedenen Schiffsarten bzw. Schiffslängen wählen.
 <ul>
 <li>1er Schiffe, 2er Schiffe, 3er Schiffe, 4er Schiffe
 </ul>
 </li>
-<li>Zusätlich musst du eine Koordinate sowie eine Richtung (rechts, links, unten, oben) für die Platzierung der Schiffe wählen.
+<li> Zusätlich musst du eine Koordinate sowie eine Richtung (rechts, links, unten, oben) für die Platzierung der Schiffe wählen.
 </ul>
 </li>
 </ul>
@@ -49,20 +49,20 @@
 </li>
 <li> <b>Player  vs. Bot</b>
 <ul>
-<li>Dieser Spielmodus funktioniert genau so wie der Singleplayer, nur dass due hier gegen einen Bot spielst. </li>
+<li>Dieser Spielmodus funktioniert genau so wie der Singleplayer, nur dass du hier gegen einen Bot spielst. </li>
 <li>Bedeutet in diesem Modus kannst du auch verlieren. </li>
-<li>Desweiteren hast du die Wahl deine Schiffe selbst zu wählen/platzieren oder diese automatisch platzieren zu lassen. </li>
+<li>Desweiteren hast du die Wahl deine Schiffe selbst zu wählen/platzieren oder diese manuell platzieren zu lassen. </li>
 </ul>
 </li>
 <li> <b>Player vs. Player</b>
 <ul>
 <li>Wenn du diesen Spielmoduswählst, kannst du gegen einen Freund dein können im Schiffe Versenken beweisen.</li>
-<li>Auch hier hast du die Möglichkeit zu wählen, ob du deine Schiffe selbst wählen und platzieren willst oder dies automatisch geschehen zu lassen.</li>
+<li>Auch hier hast du die Möglichkeit zu wählen, ob du deine Schiffe manuell wählen und platzieren willst oder dies automatisch geschehen zu lassen.</li>
 </ul>
 </li>
 <li> <b>Sandkasten</b>
 <ul>
-<li>Du kannst selbst Schiffe platzieren und diese abschießen</li>
+<li>Du kannst selbst Schiffe manuell platzieren und diese abschießen</li>
 </ul>
 </li>
 <li> <b>Spielvorführung</b>
@@ -71,5 +71,3 @@
 </ul>
 </li>
 </ul>
-
-
