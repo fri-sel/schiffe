@@ -35,7 +35,7 @@ class Schiff:
             f"{bcolors.UNDERLINE}Wo soll das Schiff platziert werden?{bcolors.RESET}\n"
         )
         eingabe = str(input("Y-Pos (Buchstabe) eingeben: "))
-        if eingabe != str:
+        if not isinstance(eingabe, str):
             raise KeyError(
                 f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
             )
@@ -44,7 +44,7 @@ class Schiff:
     def posx(self) -> int:
         """Einlesen X-Position Schiff"""
         eingabe = int(input("X-Pos (Zahl) eingeben: "))
-        if eingabe != int:
+        if not isinstance(eingabe, int):
             raise KeyError(
                 f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
             )

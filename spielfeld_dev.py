@@ -42,7 +42,8 @@ class Statistics:
 class Settings:
     ship_anz: int = 5
     animation_time: float = 0.5
-    difficulty = 1
+    difficulty: int = 1
+    modus: int = 1
 
 
 class Spielfeld:
@@ -216,6 +217,32 @@ class Spielfeld:
             feld1.remove_ship(schiff1, x, y)
             pass
 
+    def place_ships_on_both_maps_manually(self):
+        """Schiffsdaten kopieren und Schiffe nacheinander auf beiden Feldern per Hand platzieren"""
+        length = Schiff.einlesen()
+        print(
+            f"{bcolors.TUERKIS}Spieler 1 - Platziere Schiff:{bcolors.RESET}\n"
+        )
+
+        try:
+            schiff1 = Schiff(length, Direction.einlesen())
+            x, y = self.lese_position()
+            feld1.add_ship(schiff1, x, y)
+        except:
+            pass
+
+        try:
+            print(
+                f"{bcolors.TUERKIS}Spieler 2 - Platziere Schiff:{bcolors.RESET}\n"
+            )
+            schiff2 = Schiff(length, Direction.einlesen())
+            x, y = self.lese_position()
+            feld2.add_ship(schiff2, x, y)
+        except:
+            feld1.remove_ship(schiff1, x, y)
+            feld2.remove_ship(schiff2, x, y)
+            pass
+
     def auto_create_ships_on_both_maps(self):
         """Schiffsdaten kopieren und random auf Feld 2 platzieren"""
         randLength = randint(1, 4)
@@ -371,7 +398,7 @@ class Spielfeld:
 
     def print_menu(self):
         while True:
-            eingabe = 0
+            Settings.modus = 0
             print(
                 f"{bcolors.TUERKIS_UNDERLINE_BOLD}WILLKOMMEN BEI SCHIFFE VERSENKEN{bcolors.RESET}\n"
             )
@@ -379,12 +406,12 @@ class Spielfeld:
                 f"{bcolors.BOLD}[1] Singleplayer\n[2] Player vs. Bot\n[3] Player vs. Player\n[4] Sandkasten-Modus\n[5] Spielvorführung\n[6] Anleitung\n[7] Einstellungen\n[8] Beenden\n{bcolors.RESET}\n"
             )
 
-            eingabe = input(
+            Settings.modus = input(
                 f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
             )
             try:
-                eingabe = int(eingabe)
-                if eingabe == 1:
+                Settings.modus = int(Settings.modus)
+                if Settings.modus == 1:
                     self.game_normal_run()
                     print(
                         f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
@@ -401,8 +428,8 @@ class Spielfeld:
                     else:
                         break
 
-                elif eingabe == 2:
-                    feld1.game_player_vs_bot()
+                elif Settings.modus == 2:
+                    self.game_player_vs_bot()
 
                     print(
                         f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
@@ -420,8 +447,8 @@ class Spielfeld:
                     else:
                         break
 
-                elif eingabe == 3:
-                    print("folgt")
+                elif Settings.modus == 3:
+                    self.game_player_vs_player()
 
                     print(
                         f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
@@ -439,7 +466,7 @@ class Spielfeld:
                     else:
                         break
 
-                elif eingabe == 4:
+                elif Settings.modus == 4:
                     self.game_sandbox_mode()
                     print(
                         f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
@@ -457,7 +484,7 @@ class Spielfeld:
                     else:
                         break
 
-                elif eingabe == 5:
+                elif Settings.modus == 5:
                     self.game_speedrun()
                     while True:
                         print(
@@ -483,10 +510,28 @@ class Spielfeld:
                             continue
                     break
 
-                elif eingabe == 6:
-                    print("folgt")
+                elif Settings.modus == 6:
+                    anleitung = open("anleitung.txt")
+                    for line in anleitung:
+                        print(line.rstrip())
+                    anleitung.close()
+                    print(
+                        f"{bcolors.BOLD}\n[1] Zurück zum Menü\n[2] Beenden{bcolors.RESET}\n"
+                    )
+                    ende_auswahl = int(
+                        int(
+                            input(
+                                f"{bcolors.BOLD}Wählen sie eine Option: {bcolors.RESET}"
+                            )
+                        )
+                    )
+                    if ende_auswahl == 1:
+                        self.clear_Field()
+                        self.print_menu()
+                    else:
+                        break
 
-                elif eingabe == 7:
+                elif Settings.modus == 7:
                     anz = int(
                         input(
                             f"{bcolors.BOLD}Anzahl der Schiffe eingeben: {bcolors.RESET}"
@@ -503,7 +548,7 @@ class Spielfeld:
 
                     self.print_menu()
 
-                elif eingabe == 8:
+                elif Settings.modus == 8:
                     break
 
                 else:
@@ -589,9 +634,15 @@ class Spielfeld:
             for x in range(feld2.breite):
                 if feld2.data[x][y] == State.SCHIFF:
                     return 1
-        print(
-            f"{bcolors.TUERKIS_UNDERLINE}Gewonnen - Du hast alle Schiffe versenkt!{bcolors.RESET}"
-        )
+
+        if Settings.modus == 3:
+            print(
+                f"{bcolors.TUERKIS_UNDERLINE}Spieler 1 hat gewonnen!{bcolors.RESET}"
+            )
+        else:
+            print(
+                f"{bcolors.TUERKIS_UNDERLINE}Gewonnen - Du hast alle Schiffe versenkt!{bcolors.RESET}"
+            )
 
         self.print_statistics_multiplayer()
         return 0
@@ -602,9 +653,15 @@ class Spielfeld:
             for x in range(feld1.breite):
                 if feld1.data[x][y] == State.SCHIFF:
                     return 1
-        print(
-            f"{bcolors.TUERKIS_UNDERLINE}Verloren - Dein Gegner hat alle Schiffe versenkt!{bcolors.RESET}"
-        )
+        if Settings.modus == 3:
+            print(
+                f"{bcolors.TUERKIS_UNDERLINE}Spieler 2 hat gewonnen!{bcolors.RESET}"
+            )
+        else:
+            print(
+                f"{bcolors.TUERKIS_UNDERLINE}Gewonnen - Du hast alle Schiffe versenkt!{bcolors.RESET}"
+            )
+
         self.print_statistics_multiplayer()
         return 0
 
@@ -658,7 +715,7 @@ class Spielfeld:
 
     def game_player_vs_bot(self):
         """Spieler gegen Computer Spielmodus"""
-        print(f"{bcolors.BOLD_UNDERLINE}Spielart wählen{bcolors.RESET}\n")
+        print(f"{bcolors.BOLD_UNDERLINE}Spielart wählen:{bcolors.RESET}\n")
         auswahl = int(
             input(
                 f"{bcolors.UNDERLINE}Wie sollen die Schiffe platziert werden?{bcolors.RESET}\n[1] Selber hinzufügen\n[2] Automatisch hinzufügen\nEingabe: "
@@ -703,8 +760,8 @@ class Spielfeld:
                 f"{bcolors.UNDERLINE}Letzter Schuss:{bcolors.RESET} {Statistics.last_y}{Statistics.last_x}\n"
             )
             Statistics.rounds_player1 += 1
-            # time.sleep(5)
-            # clear()
+            time.sleep(5)
+            clear()
             if self.victory_check_player() == 0:
                 break
 
@@ -714,14 +771,14 @@ class Spielfeld:
             feld1.print_field()
             feld1.auto_shooter()
             Statistics.rounds_player2 += 1
-            # time.sleep(7)
-            # clear()
+            time.sleep(7)
+            clear()
             if self.victory_check_enemy() == 0:
                 break
 
-def game_player_vs_player(self):
+    def game_player_vs_player(self):
         """Spieler gegen Spieler Spielmodus"""
-        print(f"{bcolors.BOLD_UNDERLINE}Spielart wählen{bcolors.RESET}\n")
+        print(f"{bcolors.BOLD_UNDERLINE}Spielart wählen:{bcolors.RESET}\n")
         auswahl = int(
             input(
                 f"{bcolors.UNDERLINE}Wie sollen die Schiffe platziert werden?{bcolors.RESET}\n[1] Selber hinzufügen\n[2] Automatisch hinzufügen\nEingabe: "
@@ -735,7 +792,9 @@ def game_player_vs_player(self):
             )
             Settings.ship_anz = anz
             for anz in range(anz):
-                self.create_ships_on_both_maps()
+                self.place_ships_on_both_maps_manually()
+                feld1.print_field()
+                feld2.print_field()
 
         elif auswahl == 2:
             self.auto_add_ships_on_both_maps()
@@ -746,19 +805,19 @@ def game_player_vs_player(self):
             )
         clear()
         print(
-            f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Spieler vs. Bot{bcolors.RESET}\n"
+            f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Spieler vs. Spieler{bcolors.RESET}\n"
         )
-        print(f"{bcolors.TUERKIS_UNDERLINE}Dein Feld:{bcolors.RESET}\n")
+        print(f"{bcolors.TUERKIS_UNDERLINE}Feld Spieler 1:{bcolors.RESET}\n")
         feld1.print_field()
-        print(
-            f"\n{bcolors.TUERKIS_UNDERLINE}Gegner Feld (Bot):{bcolors.RESET}\n"
-        )
+        print(f"\n{bcolors.TUERKIS_UNDERLINE}Feld Spieler 2:{bcolors.RESET}\n")
         feld2.print_field()
         time.sleep(5)
         clear()
 
         while feld2.victory_check() != 0:
-            print(f"\n{bcolors.TUERKIS_UNDERLINE}Dein Zug:{bcolors.RESET}\n")
+            print(
+                f"\n{bcolors.TUERKIS_UNDERLINE}Zug Spieler 1:{bcolors.RESET}\n"
+            )
             feld2.print_field()
             feld2.single_shot()
             feld2.print_field()
@@ -766,21 +825,27 @@ def game_player_vs_player(self):
                 f"{bcolors.UNDERLINE}Letzter Schuss:{bcolors.RESET} {Statistics.last_y}{Statistics.last_x}\n"
             )
             Statistics.rounds_player1 += 1
-            # time.sleep(5)
-            # clear()
+            time.sleep(5)
+            clear()
             if self.victory_check_player() == 0:
                 break
 
             print(
-                f"\n{bcolors.TUERKIS_UNDERLINE}Gegner (Bot) spielt:{bcolors.RESET}\n"
+                f"\n{bcolors.TUERKIS_UNDERLINE}Zug Spieler 2:{bcolors.RESET}\n"
             )
             feld1.print_field()
-            feld1.auto_shooter()
+            feld1.single_shot()
+            feld1.print_field()
+            print(
+                f"{bcolors.UNDERLINE}Letzter Schuss:{bcolors.RESET} {Statistics.last_y}{Statistics.last_x}\n"
+            )
             Statistics.rounds_player2 += 1
-            # time.sleep(7)
-            # clear()
+            time.sleep(5)
+            clear()
             if self.victory_check_enemy() == 0:
                 break
+
+
 # Spielfeld erstellen
 feld1 = Spielfeld(10, 10)
 feld2 = Spielfeld(10, 10)
@@ -818,9 +883,6 @@ feld2 = Spielfeld(10, 10)
 feld1.print_menu()
 
 
-
-
 # TO DO:
 # Bot Schwierigkeit
-# Spieler gegen Spieler
 # Menu Anleitung als Text
