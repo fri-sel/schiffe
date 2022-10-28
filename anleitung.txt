@@ -51,7 +51,7 @@
 <ul>
 <li>Dieser Spielmodus funktioniert genau so wie der Singleplayer, nur dass du hier gegen einen Bot spielst. </li>
 <li>Bedeutet in diesem Modus kannst du auch verlieren. </li>
-<li>Desweiteren hast du die Wahl deine Schiffe selbst zu wählen/platzieren oder diese manuell platzieren zu lassen. </li>
+<li>Desweiteren hast du die Wahl deine Schiffe manuell zu wählen/platzieren oder diese automatisch platzieren zu lassen. </li>
 </ul>
 </li>
 <li> <b>Player vs. Player</b>
@@ -62,7 +62,7 @@
 </li>
 <li> <b>Sandkasten</b>
 <ul>
-<li>Du kannst selbst Schiffe manuell platzieren und diese abschießen</li>
+<li>Du kannst Schiffe manuell platzieren und diese abschießen</li>
 </ul>
 </li>
 <li> <b>Spielvorführung</b>
@@ -71,3 +71,5 @@
 </ul>
 </li>
 </ul>
+
+
