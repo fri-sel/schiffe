@@ -2,17 +2,8 @@
 ***
 <h2>Beschreibung:</h2>
 Ein Programm mit welchem es möglich ist Schiffe Versenken zu spielen.<br />
-<p>Wenn das Programm gestartet wird, ist ein Menü mit verschienden Auswahlmöglichkeiten wie "Singleplayer", "Multiplayer" oder "Einstellungen" zu sehen. Per Eingabe der Zahl des entsprechenden Menüpunktes, kann dieser aufgerufen werden.</p>
+<p>Wenn das Programm gestartet wird, ist ein Menü mit verschienden Auswahlmöglichkeiten wie "Singleplayer", "Player vs. Bot" oder "Einstellungen" zu sehen. Per Eingabe der Zahl des entsprechenden Menüpunktes, kann dieser aufgerufen werden.</p>
 
-Singleplayer:<br />
-Es wird ein 10x10 großes Spielfeld erzeugt mit Zahlen (1-10)  auf der x-Achse Buchstaben (A-J) und auf der y-Achse.<br />
-Der Nutzer (Spieler) wählt die Position und Ausrichtung seiner Schiffe mit verschiendener Länge.<br />
-Die Schiffe können nun abgeschossen werden.<br />
-Dafür gibt es zwei Modi - Single-Shot und Auto-Shooter:<br />
-Im Modus Single-Shot kann der Nutzer (Spieler) durch Eingabe eine Position wählen auf die geschossen werden soll. </br>
-Im Modus Auto-Shooter versucht der Computer mit Schüssen auf zufällige Positionen alle Schiffe zu versenken.
-
-Mutliplayer:<br />
 <h2>Legende:</h2>
 <span style="color:blue">〰️ = Wasser</span><br />
 🚢 = Schiff<br />
