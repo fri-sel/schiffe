@@ -789,6 +789,26 @@ class Spielfeld:
                 print(f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}")
         sys.exit()
 
+    def print_field_invisible(self):
+        """Ausgeben des Feldes und setzen der Schiffe"""
+
+        print("+ 1 2 3 4 5 6 7 8 9 10")
+
+        assert self.hoehe == 10
+        for y, label in enumerate("ABCDEFGHIJ"):
+            print(label + " ", end="")
+
+            for x in range(self.breite):
+                if self.data[x][y] == State.WASSER:
+                    print(f"{bcolors.BLUE_BG}〰️{bcolors.RESET}", end="")
+                elif self.data[x][y] == State.SCHIFF:
+                    print(f"{bcolors.BLUE_BG}〰️{bcolors.RESET}", end="")
+                elif self.data[x][y] == State.BESCHOSSEN:
+                    print(f"{bcolors.BLUE_BG}  {bcolors.RESET}", end="")
+                elif self.data[x][y] == State.GETROFFEN:
+                    print(f"{bcolors.BLUE_BG}❌{bcolors.RESET}", end="")
+            print("")
+
     def print_field(self):
         """Ausgeben des Feldes und setzen der Schiffe"""
 
@@ -922,17 +942,17 @@ class Spielfeld:
             f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Singleplayer{bcolors.RESET}\n"
         )
         self.auto_add_ships()
-        self.print_field()
+        self.print_field_invisible()
         while self.victory_check() != 0:
             self.single_shot()
             Statistics.rounds += 1
-            self.print_field()
+            self.print_field_invisible()
             print(
                 f"{bcolors.UNDERLINE}Letzter Schuss:{bcolors.RESET} {Statistics.last_y}{Statistics.last_x}\n"
             )
             time.sleep(5)
             clear()
-            self.print_field()
+            self.print_field_invisible()
 
     def game_sandbox_mode(self):
         """Sandkastenmodus: Selbst Schiffe platzieren"""
@@ -959,17 +979,17 @@ class Spielfeld:
                 f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Sandkastenmodus{bcolors.RESET}\n"
             )
 
-        self.print_field()
+        self.print_field_invisible()
         while self.victory_check() != 0:
             self.single_shot()
             Statistics.rounds += 1
-            self.print_field()
+            self.print_field_invisible()
             print(
                 f"{bcolors.UNDERLINE}Letzter Schuss:{bcolors.RESET} {Statistics.last_y}{Statistics.last_x}\n"
             )
             time.sleep(5)
             clear()
-            self.print_field()
+            self.print_field_invisible()
 
     def game_player_vs_bot(self):
         """Spieler gegen Computer Spielmodus"""
@@ -1024,15 +1044,15 @@ class Spielfeld:
         print(
             f"\n{bcolors.TUERKIS_UNDERLINE}Gegner Feld (Bot):{bcolors.RESET}\n"
         )
-        feld2.print_field()
+        feld2.print_field_invisible()
         time.sleep(5)
         clear()
 
         while feld2.victory_check() != 0:
             print(f"\n{bcolors.TUERKIS_UNDERLINE}Dein Zug:{bcolors.RESET}\n")
-            feld2.print_field()
+            feld2.print_field_invisible()
             feld2.single_shot()
-            feld2.print_field()
+            feld2.print_field_invisible()
             print(
                 f"{bcolors.UNDERLINE}Letzter Schuss:{bcolors.RESET} {Statistics.last_y}{Statistics.last_x}\n"
             )
@@ -1093,8 +1113,8 @@ class Spielfeld:
             Settings.ship_anz = anz
             for anz in range(anz):
                 self.place_ships_on_both_maps_manually()
-                feld1.print_field()
-                feld2.print_field()
+                feld1.print_field_invisible()
+                feld2.print_field_invisible()
 
         elif auswahl == 2:
             self.auto_add_ships_on_both_maps()
@@ -1108,9 +1128,9 @@ class Spielfeld:
             f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Spieler vs. Spieler{bcolors.RESET}\n"
         )
         print(f"{bcolors.TUERKIS_UNDERLINE}Feld Spieler 1:{bcolors.RESET}\n")
-        feld1.print_field()
+        feld1.print_field_invisible()
         print(f"\n{bcolors.TUERKIS_UNDERLINE}Feld Spieler 2:{bcolors.RESET}\n")
-        feld2.print_field()
+        feld2.print_field_invisible()
         time.sleep(5)
         clear()
 
@@ -1118,9 +1138,9 @@ class Spielfeld:
             print(
                 f"\n{bcolors.TUERKIS_UNDERLINE}Zug Spieler 1:{bcolors.RESET}\n"
             )
-            feld2.print_field()
+            feld2.print_field_invisible()
             feld2.single_shot()
-            feld2.print_field()
+            feld2.print_field_invisible()
             print(
                 f"{bcolors.UNDERLINE}Letzter Schuss:{bcolors.RESET} {Statistics.last_y}{Statistics.last_x}\n"
             )
@@ -1133,9 +1153,9 @@ class Spielfeld:
             print(
                 f"\n{bcolors.TUERKIS_UNDERLINE}Zug Spieler 2:{bcolors.RESET}\n"
             )
-            feld1.print_field()
+            feld1.print_field_invisible()
             feld1.single_shot()
-            feld1.print_field()
+            feld1.print_field_invisible()
             print(
                 f"{bcolors.UNDERLINE}Letzter Schuss:{bcolors.RESET} {Statistics.last_y}{Statistics.last_x}\n"
             )
