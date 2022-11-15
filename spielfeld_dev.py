@@ -27,6 +27,7 @@ class State(Enum):
 
 class Statistics:
     rounds: int = 0
+    turn: int = 1
     rounds_player1: int = 0
     rounds_player2: int = 0
     ships_hitted: int = 0
@@ -356,20 +357,36 @@ class Spielfeld:
             self.data[x][y] = State.GETROFFEN
             print(f"\n{bcolors.GREEN}-> Treffer!{bcolors.RESET}\n")
             Statistics.ships_hitted += 1
+            if Statistics.turn == 1:
+                Statistics.ships_hitted_player1 += 1
+            if Statistics.turn == 2:
+                Statistics.ships_hitted_player2 += 1
         elif self.data[x][y] == State.GETROFFEN:
             self.data[x][y] = State.GETROFFEN
             Statistics.missed_shots += 1
+            if Statistics.turn == 1:
+                Statistics.missed_shots_player1 += 1
+            if Statistics.turn == 2:
+                Statistics.missed_shots_player2 += 1
             print(
                 f"\n{bcolors.RED}-> Du hast dieses Schiff bereits getroffen!{bcolors.RESET}\n"
             )
         elif self.data[x][y] == State.BESCHOSSEN:
             Statistics.missed_shots += 1
+            if Statistics.turn == 1:
+                Statistics.missed_shots_player1 += 1
+            if Statistics.turn == 2:
+                Statistics.missed_shots_player2 += 1
             print(
                 f"\n{bcolors.RED}-> Du hast hier bereits hingezielt!{bcolors.RESET}\n"
             )
         else:
             self.data[x][y] = State.BESCHOSSEN
             Statistics.missed_shots += 1
+            if Statistics.turn == 1:
+                Statistics.missed_shots_player1 += 1
+            if Statistics.turn == 2:
+                Statistics.missed_shots_player2 += 1
             print(
                 f"\n{bcolors.YELLOW}-> Du hast ins Wasser getroffen...{bcolors.RESET}\n"
             )
@@ -390,15 +407,21 @@ class Spielfeld:
             self.data[x][y] = State.GETROFFEN
             print(f"\n{bcolors.GREEN}-> Treffer!{bcolors.RESET}\n")
             Statistics.ships_hitted += 1
+            if Statistics.turn == 2:
+                Statistics.ships_hitted_player2 += 1
         elif self.data[x][y] == State.GETROFFEN:
             self.data[x][y] = State.GETROFFEN
             print(
                 f"\n{bcolors.RED}-> Dieses Schiff wurde bereits getroffen!{bcolors.RESET}\n"
             )
             Statistics.missed_shots += 1
+            if Statistics.turn == 2:
+                Statistics.missed_shots_player2 += 1
         else:
             self.data[x][y] = State.BESCHOSSEN
             Statistics.missed_shots += 1
+            if Statistics.turn == 2:
+                Statistics.missed_shots_player2 += 1
             print(
                 f"\n{bcolors.YELLOW}-> Ins Wasser getroffen...{bcolors.RESET}\n"
             )
@@ -433,15 +456,21 @@ class Spielfeld:
             self.data[x][y] = State.GETROFFEN
             print(f"\n{bcolors.GREEN}-> Treffer!{bcolors.RESET}\n")
             Statistics.ships_hitted += 1
+            if Statistics.turn == 2:
+                Statistics.ships_hitted_player2 += 1
         elif self.data[x][y] == State.GETROFFEN:
             self.data[x][y] = State.GETROFFEN
             print(
                 f"\n{bcolors.RED}-> Dieses Schiff wurde bereits getroffen!{bcolors.RESET}\n"
             )
             Statistics.missed_shots += 1
+            if Statistics.turn == 2:
+                Statistics.missed_shots_player2 += 1
         else:
             self.data[x][y] = State.BESCHOSSEN
             Statistics.missed_shots += 1
+            if Statistics.turn == 2:
+                Statistics.missed_shots_player2 += 1
             print(
                 f"\n{bcolors.YELLOW}-> Ins Wasser getroffen...{bcolors.RESET}\n"
             )
@@ -477,18 +506,24 @@ class Spielfeld:
             self.data[x][y] = State.GETROFFEN
             print(f"\n{bcolors.GREEN}-> Treffer!{bcolors.RESET}\n")
             Statistics.ships_hitted += 1
+            if Statistics.turn == 2:
+                Statistics.ships_hitted_player2 += 1
         elif self.data[x][y] == State.GETROFFEN:
             self.data[x][y] = State.GETROFFEN
             print(
                 f"\n{bcolors.RED}-> Dieses Schiff wurde bereits getroffen!{bcolors.RESET}\n"
             )
             Statistics.missed_shots += 1
+            if Statistics.turn == 2:
+                Statistics.missed_shots_player2 += 1
         else:
             self.data[x][y] = State.BESCHOSSEN
-            Statistics.missed_shots += 1
             print(
                 f"\n{bcolors.YELLOW}-> Ins Wasser getroffen...{bcolors.RESET}\n"
             )
+            Statistics.missed_shots += 1
+            if Statistics.turn == 2:
+                Statistics.missed_shots_player2 += 1
 
         Settings.treffer.append((x, y))
         Statistics.rounds += 1
@@ -775,6 +810,7 @@ class Spielfeld:
                             )
                         )
                         Settings.difficulty = difficulty
+                        self.print_menu()
                     else:
                         break
 
@@ -837,6 +873,7 @@ class Spielfeld:
         self.reset_statistics()
 
     def reset_statistics(self):
+        Statistics.turn = 1
         Statistics.rounds = 0
         Statistics.rounds_player1 = 0
         Statistics.rounds_player2 = 0
@@ -856,15 +893,15 @@ class Spielfeld:
         print("Verfehlte Schüsse:", Statistics.missed_shots)
 
     def print_statistics_multiplayer(self):
-        print(f"{bcolors.BLUE}Spieler Statistiken:{bcolors.RESET}")
+        print(f"{bcolors.BLUE}Spieler 1 Statistiken:{bcolors.RESET}")
         print("Schüsse Gesamt:", Statistics.rounds_player1)
-        print("Treffer bei Schiffen:", Statistics.ships_hitted)
-        print("Verfehlte Schüsse:", Statistics.missed_shots)
+        print("Treffer bei Schiffen:", Statistics.ships_hitted_player1)
+        print("Verfehlte Schüsse:", Statistics.missed_shots_player1)
 
-        print(f"\n{bcolors.BLUE}Gegner Statistiken:{bcolors.RESET}")
+        print(f"\n{bcolors.BLUE}Spieler 2 Statistiken:{bcolors.RESET}")
         print("Schüsse Gesamt:", Statistics.rounds_player2)
-        print("Treffer bei Schiffen:", Statistics.ships_hitted)
-        print("Verfehlte Schüsse:", Statistics.missed_shots)
+        print("Treffer bei Schiffen:", Statistics.ships_hitted_player2)
+        print("Verfehlte Schüsse:", Statistics.missed_shots_player2)
 
     def victory_check(self):
         """Checken ob alle Schiffe versenkt wurden"""
@@ -925,8 +962,10 @@ class Spielfeld:
             f"{bcolors.BOLD_UNDERLINE}Schiffe versenken: Spielvorführung{bcolors.RESET}\n"
         )
         self.auto_add_ships()
+
         self.print_field()
         time.sleep(3)
+        Statistics.turn == 2
         while self.victory_check() != 0:
             if Settings.difficulty == 1:
                 self.auto_shooter_normal()
@@ -1050,6 +1089,7 @@ class Spielfeld:
 
         while feld2.victory_check() != 0:
             print(f"\n{bcolors.TUERKIS_UNDERLINE}Dein Zug:{bcolors.RESET}\n")
+            Statistics.turn = 1
             feld2.print_field_invisible()
             feld2.single_shot()
             feld2.print_field_invisible()
@@ -1061,7 +1101,7 @@ class Spielfeld:
             clear()
             if self.victory_check_player() == 0:
                 break
-
+            Statistics.turn = 2
             if Settings.difficulty == 1:
                 print(
                     f"\n{bcolors.TUERKIS_UNDERLINE}Gegner (Bot) spielt:{bcolors.RESET}\n"
@@ -1138,6 +1178,7 @@ class Spielfeld:
             print(
                 f"\n{bcolors.TUERKIS_UNDERLINE}Zug Spieler 1:{bcolors.RESET}\n"
             )
+            Statistics.turn = 1
             feld2.print_field_invisible()
             feld2.single_shot()
             feld2.print_field_invisible()
@@ -1153,6 +1194,7 @@ class Spielfeld:
             print(
                 f"\n{bcolors.TUERKIS_UNDERLINE}Zug Spieler 2:{bcolors.RESET}\n"
             )
+            Statistics.turn = 2
             feld1.print_field_invisible()
             feld1.single_shot()
             feld1.print_field_invisible()
