@@ -785,13 +785,29 @@ class Spielfeld:
                     )
 
                     if option == 1:
-                        anz = int(
-                            input(
-                                f"{bcolors.BOLD}Anzahl der Schiffe eingeben: {bcolors.RESET}"
-                            )
-                        )
+                        ask_ship_count = True
+                        while ask_ship_count:
+                            try:
+                                anz = int(
+                                    input(
+                                        f"{bcolors.BOLD}Anzahl der Schiffe eingeben: {bcolors.RESET}"
+                                    )
+                                )
+                                if int(anz) >= 0 and int(anz) <= 25:
+                                    ask_ship_count = False
+                                    break
+                                print(
+                                    f"{bcolors.RED}Fehler: Max. 25 Schiffe erlaubt!{bcolors.RESET}"
+                                )
+                                continue
+                            except ValueError:
+                                print(
+                                    f"{bcolors.RED}Fehler: Ungültige Eingabe{bcolors.RESET}"
+                                )
+
                         Settings.ship_anz = anz
                         self.print_menu()
+
                     if option == 2:
                         ani_time = float(
                             input(
@@ -800,6 +816,7 @@ class Spielfeld:
                         )
                         Settings.animation_time = ani_time
                         self.print_menu()
+
                     if option == 3:
                         print(
                             f"{bcolors.BOLD}[1] Einfach\n[2] Mittel\n[3] Schwer{bcolors.RESET}"
